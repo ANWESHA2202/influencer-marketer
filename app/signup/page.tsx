@@ -76,7 +76,7 @@ export default function SignupPage() {
 
   const handleBrandDataSubmit = async (data: any) => {
     try {
-      const { fullName, companyName, role } = data;
+      const { fullName, companyName, role, userType } = data;
       const username = generateUsername(email);
       createUser({
         email: email,
@@ -85,6 +85,7 @@ export default function SignupPage() {
         role: role,
         password: password,
         username,
+        userType,
       });
     } catch (e) {
       console.log("Error in Registering User", e);

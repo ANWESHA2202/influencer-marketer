@@ -1,25 +1,38 @@
 import React, { useState } from "react";
-import { TextField, Button, CircularProgress } from "@mui/material";
+import {
+  TextField,
+  Button,
+  ToggleButton,
+  ToggleButtonGroup,
+  CircularProgress,
+} from "@mui/material";
 
-interface Step {
-  label: string;
-  key: keyof UserData;
-  placeholder: string;
-  optional?: boolean;
-}
-
-interface UserData {
+interface FormData {
+  userType: "brand" | "creator" | "";
   fullName: string;
   companyName: string;
   role: string;
 }
 
+interface Step {
+  label: string;
+  key: keyof FormData;
+  placeholder?: string;
+  optional?: boolean;
+  type?: "text" | "select";
+}
+
 interface BrandInfoStepFormProps {
-  handleSubmitForm: (data: UserData) => Promise<void>;
   isSaving: boolean;
+  handleSubmitForm: (data: FormData) => Promise<void>;
 }
 
 const steps: Step[] = [
+  {
+    label: "Are you signing up as a Brand or Creator?",
+    key: "userType",
+    type: "select",
+  },
   { label: "Full Name", key: "fullName", placeholder: "Enter your full name" },
   {
     label: "Company Name",
@@ -35,7 +48,8 @@ const BrandInfoStepForm: React.FC<BrandInfoStepFormProps> = ({
   isSaving,
 }) => {
   const [stepIndex, setStepIndex] = useState(0);
-  const [formData, setFormData] = useState<UserData>({
+  const [formData, setFormData] = useState<FormData>({
+    userType: "",
     fullName: "",
     companyName: "",
     role: "",
@@ -43,15 +57,18 @@ const BrandInfoStepForm: React.FC<BrandInfoStepFormProps> = ({
 
   const currentStep = steps[stepIndex];
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [currentStep.key]: e.target.value });
+  const handleChange = (value: string) => {
+    setFormData((prev) => ({ ...prev, [currentStep.key]: value }));
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    handleChange(e.target.value);
   };
 
   const next = async () => {
     if (stepIndex < steps.length - 1) {
       setStepIndex(stepIndex + 1);
     } else {
-      console.log("Form submitted:", formData);
       await handleSubmitForm(formData);
     }
   };
@@ -65,17 +82,30 @@ const BrandInfoStepForm: React.FC<BrandInfoStepFormProps> = ({
   };
 
   return (
-    <div className="w-full  h-fit max-w-md mx-auto  rounded-2xl transition-all duration-300 ease-in-out">
+    <div className="w-full max-w-md mx-auto rounded-2xl transition-all duration-300 ease-in-out">
       <h2 className="text-xl font-semibold mb-4">{currentStep.label}</h2>
 
       <div className="transition-opacity duration-300 ease-in-out opacity-100">
-        <TextField
-          fullWidth
-          variant="outlined"
-          placeholder={currentStep.placeholder}
-          value={formData[currentStep.key]}
-          onChange={handleChange}
-        />
+        {currentStep.type === "select" ? (
+          <ToggleButtonGroup
+            color="primary"
+            value={formData.userType}
+            exclusive
+            onChange={(_, value) => value && handleChange(value)}
+            fullWidth
+          >
+            <ToggleButton value="brand">Brand</ToggleButton>
+            <ToggleButton value="creator">Creator</ToggleButton>
+          </ToggleButtonGroup>
+        ) : (
+          <TextField
+            fullWidth
+            variant="outlined"
+            placeholder={currentStep.placeholder}
+            value={formData[currentStep.key] as string}
+            onChange={handleInputChange}
+          />
+        )}
       </div>
 
       <div className="flex justify-end mt-6 gap-2">
