@@ -1,0 +1,64 @@
+// URL Mappings for API endpoints
+export const URLMapping = {
+  // Authentication
+  login: "/auth/login",
+  register: "/auth/register",
+  logout: "/auth/logout",
+  "refresh-token": "/auth/refresh",
+
+  // User Management
+  profile: "/user/profile",
+  "update-profile": "/user/profile",
+
+  // Influencers
+  influencers: "/influencers",
+  "influencer-details": "/influencers/:id",
+  "influencer-search": "/influencers/search",
+  "influencer-categories": "/influencers/categories",
+
+  // Campaigns
+  campaigns: "/campaigns",
+  "campaign-details": "/campaigns/:id",
+  "create-campaign": "/campaigns",
+  "update-campaign": "/campaigns/:id",
+  "delete-campaign": "/campaigns/:id",
+
+  // Analytics
+  "campaign-analytics": "/analytics/campaigns/:id",
+  "influencer-analytics": "/analytics/influencers/:id",
+  "dashboard-stats": "/analytics/dashboard",
+
+  // Settings
+  "supported-languages": "/settings/languages",
+  countries: "/settings/countries",
+  categories: "/settings/categories",
+
+  // Notifications
+  notifications: "/notifications",
+  "mark-notification-read": "/notifications/:id/read",
+} as const;
+
+// API Response Types
+export interface ApiResponse<T = any> {
+  data: T;
+  message?: string;
+  status: number;
+  success: boolean;
+}
+
+export interface PaginatedResponse<T = any> {
+  data: T[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
+}
+
+// Common API Error Types
+export interface ApiError {
+  message: string;
+  status: number;
+  errors?: Record<string, string[]>;
+}

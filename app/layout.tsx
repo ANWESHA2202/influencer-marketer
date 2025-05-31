@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { AuthProvider } from "@/context/AuthContext";
-import { CssBaseline } from "@mui/material";
-import { lightTheme } from "../context/theme/mui-theme";
-import { ThemeProvider } from "@mui/material/styles";
+import Providers from "../components/Providers";
 
 export const metadata: Metadata = {
   title: "Influencer Marketing Platform",
@@ -19,12 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ThemeProvider theme={lightTheme}>
-          <AuthProvider>
-            <CssBaseline />
-            {children}
-          </AuthProvider>
-        </ThemeProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
