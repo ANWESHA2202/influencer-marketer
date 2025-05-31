@@ -1,7 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+} from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { auth } from "@/firebaseConfig";
 import {
@@ -31,6 +35,17 @@ export default function LoginPage() {
       setError(err.message);
     } finally {
       setIsLogging(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      const resFromGoogle = await signInWithPopup(auth, provider);
+      console.log(resFromGoogle);
+      router.push("/");
+    } catch (err: any) {
+      setError(err.message);
     }
   };
 
@@ -79,6 +94,7 @@ export default function LoginPage() {
               startIcon={<GoogleIcon />}
               fullWidth
               className="normal-case"
+              onClick={handleGoogleLogin}
             >
               Continue with Google
             </Button>
