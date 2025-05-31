@@ -53,7 +53,12 @@ export default function SignupPage() {
           <h2 className="text-2xl font-semibold mb-2">Create your account</h2>
           <p className="text-sm mb-6">
             Already have an account?{" "}
-            <span className="text-blue-800 cursor-pointer">Log In</span>
+            <span
+              className="text-blue-800 cursor-pointer"
+              onClick={() => router.push("/login")}
+            >
+              Log In
+            </span>
           </p>
 
           {/* Social Buttons */}
@@ -89,7 +94,7 @@ export default function SignupPage() {
               variant="outlined"
               fullWidth
               onChange={(e) => setEmail(e.target.value)}
-              slotProps={{ inputLabel: { shrink: true } }}
+              // slotProps={{ inputLabel: { shrink: true } }}
             />
             <TextField
               label="Password"
@@ -98,7 +103,7 @@ export default function SignupPage() {
               fullWidth
               onChange={(e) => setPassword(e.target.value)}
               sx={{ marginTop: "1em" }}
-              slotProps={{ inputLabel: { shrink: true } }}
+              // slotProps={{ inputLabel: { shrink: true } }}
             />
           </div>
           {/* 
@@ -109,9 +114,9 @@ export default function SignupPage() {
           <Button
             variant="contained"
             fullWidth
-            className="mt-6 bg-blue-700 hover:bg-blue-800 normal-case"
             onClick={handleSignup}
             sx={{ marginTop: "1em" }}
+            color="primary"
           >
             Sign Up
           </Button>
