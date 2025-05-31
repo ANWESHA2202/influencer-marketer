@@ -2,7 +2,7 @@ import axios, { AxiosInstance, AxiosResponse } from "axios";
 
 // Base API URL - you can set this in environment variables
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://n514stzk-8000.inc1.devtunnels.ms/";
+  process.env.NEXT_PUBLIC_API_URL || "https://api.example.com";
 
 // Create base axios instance
 const axiosInstance = axios.create({
