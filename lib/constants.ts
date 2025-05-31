@@ -2,7 +2,7 @@
 export const URLMapping = {
   // Authentication
   login: "/auth/login",
-  register: "/auth/register",
+  register: "/auth/register/user",
   logout: "/auth/logout",
   "refresh-token": "/auth/refresh",
 
