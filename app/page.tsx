@@ -1,3 +1,4 @@
+"use client";
 import {
   Button,
   Card,
@@ -13,8 +14,10 @@ import {
   LinearProgress,
   Divider,
 } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
   return (
     <Container maxWidth="lg" className="py-8">
       {/* Header */}
@@ -28,7 +31,11 @@ export default function Home() {
           </Typography>
         </div>
         <div className="flex gap-3">
-          <Button variant="outlined" color="secondary">
+          <Button
+            variant="outlined"
+            color="secondary"
+            onClick={() => router.push("/signup")}
+          >
             Sign In
           </Button>
           <Button variant="contained" color="primary">
