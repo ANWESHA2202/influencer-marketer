@@ -16,14 +16,22 @@ import {
   Divider,
 } from "@mui/material";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Home() {
   const router = useRouter();
-  const { user, logout, loading } = useAuth();
+  const { user, loading } = useAuth();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push("/signup");
+    }
+  }, [loading, user, router]);
+
+  console.log(user, "This is user");
 
   if (loading) return <p className="text-center mt-10">Loading...</p>;
-
-  console.log(user, "THIS IS USER");
+  if (!user) return null;
 
   return (
     <Container maxWidth="lg" className="py-8">
