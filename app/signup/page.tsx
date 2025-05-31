@@ -1,7 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { auth } from "@/firebaseConfig";
 import { TextField, Button, Divider, useTheme } from "@mui/material";
@@ -26,6 +30,7 @@ export default function SignupPage() {
   const [saving, setSaving] = useState(false);
   const [isUserDataProcess, setIsUserDataProcess] = useState(false);
   const theme = useTheme();
+  const [userCreationError, setUserCreationError] = useState("");
 
   const {
     create: createUser,
@@ -41,6 +46,21 @@ export default function SignupPage() {
     },
   });
 
+  const handleGoogleLogin = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      const resFromGoogle = await signInWithPopup(auth, provider);
+      if (resFromGoogle?.user) {
+        const { user } = resFromGoogle;
+        if (user.email) {
+          setEmail(user.email);
+          setIsUserDataProcess(true);
+        }
+      }
+    } catch (err: any) {
+      setError(err.message);
+    }
+  };
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -98,13 +118,15 @@ export default function SignupPage() {
 
       {/* Right Panel */}
       {isUserDataProcess ? (
-        <div className="flex justify-items-center w-full items-center">
-          <div
-            className="text-center text-sm mt-2 "
-            style={{ color: theme.palette.error.main }}
-          >
-            {/* {error} */}
-          </div>
+        <div className="flex flex-col justify-items-center w-full items-center">
+          {createError && (
+            <div
+              className="text-center text-sm mt-2 font-bold "
+              style={{ color: theme.palette.error.main }}
+            >
+              Something went wrong
+            </div>
+          )}
           <BrandInfoStepForm
             handleSubmitForm={handleBrandDataSubmit}
             isSaving={createLoading}
@@ -131,6 +153,7 @@ export default function SignupPage() {
                 startIcon={<GoogleIcon />}
                 fullWidth
                 className="normal-case"
+                onClick={handleGoogleLogin}
               >
                 Continue with Google
               </Button>
