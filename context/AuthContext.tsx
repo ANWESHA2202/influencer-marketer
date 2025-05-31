@@ -10,7 +10,7 @@ import {
 import { onAuthStateChanged, signOut, User } from "firebase/auth";
 import { auth } from "@/firebaseConfig";
 import AuthenticatedLayout from "@/components/AuthenticatedLayout";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import router from "next/router";
 
 type AuthContextType = {
@@ -29,6 +29,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const pathname = usePathname();
+  const router = useRouter();
   const publicRoutes = ["/signup", "/login"]; // define routes that shouldn't use AuthenticatedLayout
   const isPublicRoute = publicRoutes.includes(pathname);
 
