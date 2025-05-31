@@ -92,7 +92,6 @@ export default function SignupPage() {
     }
   };
 
-  console.log(createLoading, createError, createSuccess);
   return (
     <div className="min-h-screen flex">
       {/* Left Panel */}

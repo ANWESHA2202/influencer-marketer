@@ -2,8 +2,12 @@
 import React from "react";
 import CreatorLists from "./CreatorLists";
 import SearchFilters from "./SearchFilters";
+import { useAuth } from "@/context/AuthContext";
+import LandingPage from "./LandingPage";
 
 const HomeComponent = () => {
+  const { user } = useAuth();
+
   const handleFiltersChange = (filters: any) => {
     // This will be implemented later when we add actual filtering logic
     console.log("Filters changed:", filters);
@@ -15,13 +19,21 @@ const HomeComponent = () => {
   };
 
   return (
-    <div>
-      <SearchFilters
-        onFiltersChange={handleFiltersChange}
-        onAISearchChange={handleAISearchChange}
-      />
-      <CreatorLists />
-    </div>
+    <>
+      {user ? (
+        <div>
+          <SearchFilters
+            onFiltersChange={handleFiltersChange}
+            onAISearchChange={handleAISearchChange}
+          />
+          <CreatorLists />
+        </div>
+      ) : (
+        <div>
+          <LandingPage />
+        </div>
+      )}
+    </>
   );
 };
 
