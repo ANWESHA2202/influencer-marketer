@@ -4,22 +4,28 @@ import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { auth } from "@/firebaseConfig";
-import { TextField, Button, Divider } from "@mui/material";
+import { TextField, Button, Divider, useTheme } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
+import { CircularProgress } from "@mui/material";
 
 export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
+  const [saving, setSaving] = useState(false);
+  const theme = useTheme();
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      setSaving(true);
       await createUserWithEmailAndPassword(auth, email, password);
       router.push("/");
     } catch (err: any) {
       setError(err.message);
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -111,6 +117,12 @@ export default function SignupPage() {
             Forgot password?
           </div> */}
 
+          <div
+            className="text-center text-sm mt-2 "
+            style={{ color: theme.palette.error.main }}
+          >
+            {error}
+          </div>
           <Button
             variant="contained"
             fullWidth
@@ -118,7 +130,11 @@ export default function SignupPage() {
             sx={{ marginTop: "1em" }}
             color="primary"
           >
-            Sign Up
+            {saving ? (
+              <CircularProgress sx={{ color: "#FFFFFF" }} size={"1.2em"} />
+            ) : (
+              " Sign Up"
+            )}
           </Button>
         </div>
       </div>
