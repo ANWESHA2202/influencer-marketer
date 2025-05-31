@@ -2,8 +2,8 @@
 
 import { useState } from 'react'
 import { signInWithEmailAndPassword } from 'firebase/auth'
-// import { auth } from '@/firebase/config'
 import { useRouter } from 'next/navigation'
+import {auth} from '@/firebaseConfig'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -14,7 +14,7 @@ export default function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-    //   await signInWithEmailAndPassword(auth, email, password)
+      await signInWithEmailAndPassword(auth, email, password)
       router.push('/') // redirect to home or dashboard
     } catch (err: any) {
       setError(err.message)
