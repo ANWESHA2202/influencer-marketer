@@ -23,8 +23,6 @@ export default function Home() {
 
   if (loading) return <p className="text-center mt-10">Loading...</p>;
 
-  console.log(user, "THIS IS USER");
-
   return (
     <Container maxWidth="lg" className="py-8">
       {/* Header */}
