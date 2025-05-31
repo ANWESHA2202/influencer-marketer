@@ -3,6 +3,7 @@ export const URLMapping = {
   // Authentication
   login: "/auth/login",
   register: "/auth/register/user",
+  registerCreator: "/auth/register/creator",
   logout: "/auth/logout",
   "refresh-token": "/auth/refresh",
 
@@ -62,3 +63,49 @@ export interface ApiError {
   status: number;
   errors?: Record<string, string[]>;
 }
+
+export const CATEGORIES = [
+  "Fashion & Beauty",
+  "Fitness & Health",
+  "Food & Cooking",
+  "Travel & Lifestyle",
+  "Technology",
+  "Gaming",
+  "Education",
+  "Entertainment",
+  "Business & Finance",
+  "Art & Design",
+  "Music",
+  "Sports",
+  "Parenting",
+  "Home & Garden",
+  "Automotive",
+];
+
+export const CONTENT_TYPES = [
+  "Photos",
+  "Videos",
+  "Stories",
+  "Reels",
+  "Live Streams",
+  "Blog Posts",
+  "Tutorials",
+  "Reviews",
+  "Unboxing",
+  "Behind the Scenes",
+];
+
+export const LANGUAGES = [
+  "English",
+  "Spanish",
+  "French",
+  "German",
+  "Italian",
+  "Portuguese",
+  "Russian",
+  "Chinese",
+  "Japanese",
+  "Korean",
+  "Arabic",
+  "Hindi",
+];
