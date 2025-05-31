@@ -38,6 +38,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(user);
       setLoading(false);
     });
+
     return () => unsubscribe();
   }, []);
 
@@ -52,7 +53,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     signOut(auth);
   };
 
-  console.log("console , this page ");
+  if (loading) return <div>Loading...</div>;
 
   return (
     <AuthContext.Provider value={{ user, loading, logout }}>
