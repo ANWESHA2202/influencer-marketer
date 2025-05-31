@@ -42,7 +42,7 @@ export default function LoginPage() {
     const provider = new GoogleAuthProvider();
     try {
       const resFromGoogle = await signInWithPopup(auth, provider);
-      console.log(resFromGoogle);
+      console.log(resFromGoogle, "on login");
       router.push("/");
     } catch (err: any) {
       setError(err.message);
