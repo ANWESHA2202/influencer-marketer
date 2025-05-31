@@ -11,6 +11,7 @@ import { onAuthStateChanged, signOut, User } from "firebase/auth";
 import { auth } from "@/firebaseConfig";
 import AuthenticatedLayout from "@/components/AuthenticatedLayout";
 import { usePathname } from "next/navigation";
+import router from "next/router";
 
 type AuthContextType = {
   user: User | null;
@@ -38,6 +39,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     });
     return () => unsubscribe();
   }, []);
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push("/signup");
+    }
+  }, [loading, user, router]);
 
   const logout = () => {
     signOut(auth);
