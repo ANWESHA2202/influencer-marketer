@@ -1,26 +1,91 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  /* Core brand colors - sophisticated and trustworthy */
+  --color-primary: #6366f1;
+  --color-primary-hover: #4f46e5;
+  --color-primary-pressed: #4338ca;
+  --color-primary-light: #a5b4fc;
+  --color-primary-muted: #e0e7ff;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* Secondary brand colors - creativity and engagement */
+  --color-secondary: #ec4899;
+  --color-secondary-hover: #db2777;
+  --color-secondary-pressed: #be185d;
+  --color-secondary-light: #f9a8d4;
+  --color-secondary-muted: #fce7f3;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Accent colors for data and insights */
+  --color-accent: #06b6d4;
+  --color-accent-hover: #0891b2;
+  --color-accent-pressed: #0e7490;
+  --color-accent-light: #67e8f9;
+  --color-accent-muted: #cffafe;
+
+  /* Status colors - professional and clear */
+  --color-success: #10b981;
+  --color-success-hover: #059669;
+  --color-success-muted: #d1fae5;
+
+  --color-warning: #f59e0b;
+  --color-warning-hover: #d97706;
+  --color-warning-muted: #fef3c7;
+
+  --color-error: #ef4444;
+  --color-error-hover: #dc2626;
+  --color-error-muted: #fee2e2;
+
+  /* Neutral colors - clean and professional */
+  --color-background-primary: #ffffff;
+  --color-background-secondary: #f8fafc;
+  --color-background-tertiary: #f1f5f9;
+
+  --color-surface-primary: #ffffff;
+  --color-surface-secondary: #f8fafc;
+  --color-surface-elevated: #ffffff;
+
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-tertiary: #64748b;
+  --color-text-inverse: #ffffff;
+  --color-text-placeholder: #94a3b8;
+
+  --color-border-primary: #e2e8f0;
+  --color-border-secondary: #cbd5e1;
+  --color-border-focus: #6366f1;
+
+  /* Specialized colors for influencer marketing features */
+  --color-influencer-tier1: #8b5cf6;
+  --color-influencer-tier2: #06b6d4;
+  --color-influencer-tier3: #10b981;
+  --color-influencer-engagement: #ec4899;
+  --color-influencer-reach: #f59e0b;
+
+  /* Data visualization colors */
+  --color-chart-primary: #6366f1;
+  --color-chart-secondary: #ec4899;
+  --color-chart-tertiary: #06b6d4;
+  --color-chart-quaternary: #10b981;
+  --color-chart-quinary: #f59e0b;
+  --color-chart-senary: #8b5cf6;
+
+  /* Interactive states */
+  --color-hover: rgba(99, 102, 241, 0.04);
+  --color-pressed: rgba(99, 102, 241, 0.08);
+  --color-selected: rgba(99, 102, 241, 0.12);
+  --color-disabled: #f1f5f9;
+  --color-divider: #e2e8f0;
+
+  /* Shadows and overlays */
+  --color-shadow-light: rgba(15, 23, 42, 0.04);
+  --color-shadow-medium: rgba(15, 23, 42, 0.08);
+  --color-shadow-heavy: rgba(15, 23, 42, 0.16);
+  --color-overlay: rgba(15, 23, 42, 0.6);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-background-primary);
+  color: var(--color-text-primary);
+  font-family: var(--font-geist-sans), "Inter", -apple-system,
+    BlinkMacSystemFont, sans-serif;
 }
