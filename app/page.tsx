@@ -1,4 +1,5 @@
 "use client";
+import { useAuth } from "@/context/AuthContext";
 import {
   Button,
   Card,
@@ -18,6 +19,12 @@ import { useRouter } from "next/navigation";
 
 export default function Home() {
   const router = useRouter();
+  const { user, logout, loading } = useAuth();
+
+  if (loading) return <p className="text-center mt-10">Loading...</p>;
+
+  console.log(user, "THIS IS USER");
+
   return (
     <Container maxWidth="lg" className="py-8">
       {/* Header */}
@@ -31,13 +38,17 @@ export default function Home() {
           </Typography>
         </div>
         <div className="flex gap-3">
-          <Button
-            variant="outlined"
-            color="secondary"
-            onClick={() => router.push("/signup")}
-          >
-            Sign In
-          </Button>
+          {!user ? (
+            <Button
+              variant="outlined"
+              color="secondary"
+              onClick={() => router.push("/signup")}
+            >
+              Sign In
+            </Button>
+          ) : (
+            <p>user </p>
+          )}
           <Button variant="contained" color="primary">
             Get Started
           </Button>
