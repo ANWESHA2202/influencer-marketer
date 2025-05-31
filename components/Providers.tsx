@@ -8,6 +8,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { queryClient } from "../lib/queryClient";
 import ErrorBoundary from "./ErrorBoundary";
 import { AuthProvider } from "@/context/AuthContext";
+import PageTransition from "./PageTransition";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -15,7 +16,9 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={lightTheme}>
           <CssBaseline />
-          <AuthProvider>{children}</AuthProvider>
+          <AuthProvider>
+            <PageTransition>{children}</PageTransition>
+          </AuthProvider>
           <ReactQueryDevtools initialIsOpen={false} />
         </ThemeProvider>
       </QueryClientProvider>

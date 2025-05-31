@@ -218,8 +218,8 @@ export const lightTheme: Theme = createTheme({
               borderColor: colors.border.secondary,
             },
             "&.Mui-focused fieldset": {
-              borderColor: colors.border.focus,
-              borderWidth: "2px",
+              borderColor: colors.primary,
+              borderWidth: "1px",
             },
           },
         },
