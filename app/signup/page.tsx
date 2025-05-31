@@ -7,6 +7,16 @@ import { auth } from "@/firebaseConfig";
 import { TextField, Button, Divider, useTheme } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 import { CircularProgress } from "@mui/material";
+import BrandInfoStepForm from "@/components/BrandInfo";
+import { useCreate } from "@/hooks";
+import { URLMapping } from "@/lib/constants";
+import { axiosWithAuth } from "@/lib/axios";
+
+function generateUsername(email: string) {
+  const namePart = email.split("@")[0].replace(/[^a-zA-Z0-9]/g, "");
+  const randomSuffix = Math.floor(Math.random() * 10000); // 4-digit number
+  return `${namePart}${randomSuffix}`;
+}
 
 export default function SignupPage() {
   const [email, setEmail] = useState("");
@@ -14,14 +24,29 @@ export default function SignupPage() {
   const [error, setError] = useState("");
   const router = useRouter();
   const [saving, setSaving] = useState(false);
+  const [isUserDataProcess, setIsUserDataProcess] = useState(false);
   const theme = useTheme();
+
+  const {
+    create: createUser,
+    isPending: createLoading,
+    isSuccess: createSuccess,
+    error: createError,
+  } = useCreate(axiosWithAuth, URLMapping["register"], "withoutHeaders", {
+    onSuccess: (data) => {
+      router.push("/");
+    },
+    onError: (error) => {
+      console.error("Failed to create User:", error);
+    },
+  });
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       setSaving(true);
       await createUserWithEmailAndPassword(auth, email, password);
-      router.push("/");
+      setIsUserDataProcess(true);
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -29,6 +54,24 @@ export default function SignupPage() {
     }
   };
 
+  const handleBrandDataSubmit = async (data: any) => {
+    try {
+      const { fullName, companyName, role } = data;
+      const username = generateUsername(email);
+      createUser({
+        email: email,
+        full_name: fullName,
+        company_name: companyName,
+        role: role,
+        password: password,
+        username,
+      });
+    } catch (e) {
+      console.log("Error in Registering User", e);
+    }
+  };
+
+  console.log(createLoading, createError, createSuccess);
   return (
     <div className="min-h-screen flex">
       {/* Left Panel */}
@@ -54,121 +97,93 @@ export default function SignupPage() {
       </div>
 
       {/* Right Panel */}
-      <div className="w-1/2 bg-white flex items-center justify-center px-16">
-        <div className="w-full max-w-md">
-          <h2 className="text-2xl font-semibold mb-2">Create your account</h2>
-          <p className="text-sm mb-6">
-            Already have an account?{" "}
-            <span
-              className="text-blue-800 cursor-pointer"
-              onClick={() => router.push("/login")}
-            >
-              Log In
-            </span>
-          </p>
-
-          {/* Social Buttons */}
-          <div className="flex flex-col gap-3">
-            <Button
-              variant="outlined"
-              startIcon={<GoogleIcon />}
-              fullWidth
-              className="normal-case"
-            >
-              Continue with Google
-            </Button>
-            {/* <Button
-              variant="outlined"
-              // startIcon={<AppleIcon />}
-              fullWidth
-              className="normal-case"
-            >
-              Continue with Apple
-            </Button> */}
-          </div>
-
-          <div className="flex items-center my-6">
-            <Divider className="flex-1" />
-            <span className="px-4 text-gray-400 text-sm">OR</span>
-            <Divider className="flex-1" />
-          </div>
-
-          {/* Email/Password */}
-          <div className="space-y-4">
-            <TextField
-              label="Email"
-              variant="outlined"
-              fullWidth
-              onChange={(e) => setEmail(e.target.value)}
-              // slotProps={{ inputLabel: { shrink: true } }}
-            />
-            <TextField
-              label="Password"
-              variant="outlined"
-              type="password"
-              fullWidth
-              onChange={(e) => setPassword(e.target.value)}
-              sx={{ marginTop: "1em" }}
-              // slotProps={{ inputLabel: { shrink: true } }}
-            />
-          </div>
-          {/* 
-          <div className="text-right text-sm mt-2 text-blue-600 cursor-pointer">
-            Forgot password?
-          </div> */}
-
+      {isUserDataProcess ? (
+        <div className="flex justify-items-center w-full items-center">
           <div
             className="text-center text-sm mt-2 "
             style={{ color: theme.palette.error.main }}
           >
-            {error}
+            {/* {error} */}
           </div>
-          <Button
-            variant="contained"
-            fullWidth
-            onClick={handleSignup}
-            sx={{ marginTop: "1em" }}
-            color="primary"
-          >
-            {saving ? (
-              <CircularProgress sx={{ color: "#FFFFFF" }} size={"1.2em"} />
-            ) : (
-              " Sign Up"
-            )}
-          </Button>
+          <BrandInfoStepForm
+            handleSubmitForm={handleBrandDataSubmit}
+            isSaving={createLoading}
+          />
         </div>
-      </div>
+      ) : (
+        <div className="w-1/2 bg-white flex items-center justify-center px-16">
+          <div className="w-full max-w-md">
+            <h2 className="text-2xl font-semibold mb-2">Create your account</h2>
+            <p className="text-sm mb-6">
+              Already have an account?{" "}
+              <span
+                className="text-blue-800 cursor-pointer"
+                onClick={() => router.push("/login")}
+              >
+                Log In
+              </span>
+            </p>
+
+            {/* Social Buttons */}
+            <div className="flex flex-col gap-3">
+              <Button
+                variant="outlined"
+                startIcon={<GoogleIcon />}
+                fullWidth
+                className="normal-case"
+              >
+                Continue with Google
+              </Button>
+            </div>
+
+            <div className="flex items-center my-6">
+              <Divider className="flex-1" />
+              <span className="px-4 text-gray-400 text-sm">OR</span>
+              <Divider className="flex-1" />
+            </div>
+
+            {/* Email/Password */}
+            <div className="space-y-4">
+              <TextField
+                label="Email"
+                variant="outlined"
+                fullWidth
+                onChange={(e) => setEmail(e.target.value)}
+                // slotProps={{ inputLabel: { shrink: true } }}
+              />
+              <TextField
+                label="Password"
+                variant="outlined"
+                type="password"
+                fullWidth
+                onChange={(e) => setPassword(e.target.value)}
+                sx={{ marginTop: "1em" }}
+                // slotProps={{ inputLabel: { shrink: true } }}
+              />
+            </div>
+
+            <div
+              className="text-center text-sm mt-2 "
+              style={{ color: theme.palette.error.main }}
+            >
+              {error}
+            </div>
+            <Button
+              variant="contained"
+              fullWidth
+              onClick={handleSignup}
+              sx={{ marginTop: "1em" }}
+              color="primary"
+            >
+              {saving ? (
+                <CircularProgress sx={{ color: "#FFFFFF" }} size={"1.2em"} />
+              ) : (
+                " Sign Up"
+              )}
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
-}
-
-{
-  /* <div className="flex gap-4">
-  <TextField
-    variant="outlined"
-    label="First Name"
-    fullWidth
-    size="small"
-    sx={{
-      "& .MuiInputBase-root": {
-        backgroundColor: "#2a263a",
-        color: "white",
-      },
-      "& .MuiInputLabel-root": { color: "gray" },
-    }}
-  />
-  <TextField
-    variant="outlined"
-    label="Last Name"
-    fullWidth
-    size="small"
-    sx={{
-      "& .MuiInputBase-root": {
-        backgroundColor: "#2a263a",
-        color: "white",
-      },
-      "& .MuiInputLabel-root": { color: "gray" },
-    }}
-  />
-</div>; */
 }
