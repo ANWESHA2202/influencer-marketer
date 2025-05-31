@@ -187,3 +187,34 @@ export default function SignupPage() {
     </div>
   );
 }
+
+{
+  /* <div className="flex gap-4">
+  <TextField
+    variant="outlined"
+    label="First Name"
+    fullWidth
+    size="small"
+    sx={{
+      "& .MuiInputBase-root": {
+        backgroundColor: "#2a263a",
+        color: "white",
+      },
+      "& .MuiInputLabel-root": { color: "gray" },
+    }}
+  />
+  <TextField
+    variant="outlined"
+    label="Last Name"
+    fullWidth
+    size="small"
+    sx={{
+      "& .MuiInputBase-root": {
+        backgroundColor: "#2a263a",
+        color: "white",
+      },
+      "& .MuiInputLabel-root": { color: "gray" },
+    }}
+  />
+</div>; */
+}
