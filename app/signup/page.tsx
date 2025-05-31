@@ -118,7 +118,15 @@ export default function SignupPage() {
 
       {/* Right Panel */}
       {isUserDataProcess ? (
-        <div className="flex flex-col justify-items-center w-full items-center">
+        <div
+          className="flex flex-col justify-items-center w-full items-center"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           {createError && (
             <div
               className="text-center text-sm mt-2 font-bold "

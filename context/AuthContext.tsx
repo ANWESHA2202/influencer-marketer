@@ -41,6 +41,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return () => unsubscribe();
   }, []);
 
+  console.log(user);
   useEffect(() => {
     if (!loading && !user) {
       router.push("/signup");
