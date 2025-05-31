@@ -76,7 +76,7 @@ export default function SignupPage() {
 
   const handleBrandDataSubmit = async (data: any) => {
     try {
-      const { fullName, companyName, role } = data;
+      const { fullName, companyName, role, userType } = data;
       const username = generateUsername(email);
       createUser({
         email: email,
@@ -85,13 +85,13 @@ export default function SignupPage() {
         role: role,
         password: password,
         username,
+        userType,
       });
     } catch (e) {
       console.log("Error in Registering User", e);
     }
   };
 
-  console.log(createLoading, createError, createSuccess);
   return (
     <div className="min-h-screen flex">
       {/* Left Panel */}
@@ -118,7 +118,15 @@ export default function SignupPage() {
 
       {/* Right Panel */}
       {isUserDataProcess ? (
-        <div className="flex flex-col justify-items-center w-full items-center">
+        <div
+          className="flex flex-col justify-items-center w-full items-center"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           {createError && (
             <div
               className="text-center text-sm mt-2 font-bold "

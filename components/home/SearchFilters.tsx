@@ -68,7 +68,7 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({
   });
 
   // AI search state
-  const [isAIEnabled, setIsAIEnabled] = useState(false);
+  const [isAIEnabled, setIsAIEnabled] = useState(true);
   const [aiSearchPrompt, setAISearchPrompt] = useState("");
 
   const handleTextFieldChange = (field: string, value: string) => {

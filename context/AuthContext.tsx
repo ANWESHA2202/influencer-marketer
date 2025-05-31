@@ -11,7 +11,6 @@ import { onAuthStateChanged, signOut, User } from "firebase/auth";
 import { auth } from "@/firebaseConfig";
 import AuthenticatedLayout from "@/components/AuthenticatedLayout";
 import { usePathname, useRouter } from "next/navigation";
-import router from "next/router";
 
 type AuthContextType = {
   user: User | null;
@@ -30,28 +29,46 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const pathname = usePathname();
   const router = useRouter();
-  const publicRoutes = ["/signup", "/login"]; // define routes that shouldn't use AuthenticatedLayout
+
+  // Define public routes that don't require authentication
+  const publicRoutes = ["/", "/login", "/signin"];
   const isPublicRoute = publicRoutes.includes(pathname);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
       setLoading(false);
-    });
-    return () => unsubscribe();
-  }, []);
 
+      // Redirect unauthenticated users from protected routes
+      if (!user && !isPublicRoute && !loading) {
+        router.push("/login");
+      }
+    });
+
+    return () => unsubscribe();
+  }, [pathname, router, isPublicRoute, loading]);
+
+  // Redirect unauthenticated users when they try to access protected routes
   useEffect(() => {
-    if (!loading && !user) {
-      router.push("/signup");
+    if (!loading && !user && !isPublicRoute) {
+      router.push("/login");
     }
-  }, [loading, user, router]);
+  }, [user, loading, isPublicRoute, router]);
 
   const logout = () => {
-    signOut(auth);
+    signOut(auth).then(() => {
+      router.push("/");
+    });
   };
 
-  console.log("console , this page ");
+  // Show loading spinner while checking authentication
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   return (
     <AuthContext.Provider value={{ user, loading, logout }}>
