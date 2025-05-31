@@ -9,6 +9,7 @@ import {
 } from "react";
 import { onAuthStateChanged, signOut, User } from "firebase/auth";
 import { auth } from "@/firebaseConfig";
+import AuthenticatedLayout from "@/components/AuthenticatedLayout";
 
 type AuthContextType = {
   user: User | null;
@@ -40,7 +41,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <AuthContext.Provider value={{ user, loading, logout }}>
-      {children}
+      {user ? <AuthenticatedLayout>{children}</AuthenticatedLayout> : children}
     </AuthContext.Provider>
   );
 };

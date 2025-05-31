@@ -1,25 +1,25 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { signInWithEmailAndPassword } from 'firebase/auth'
-import { useRouter } from 'next/navigation'
-import {auth} from '@/firebaseConfig'
+import { useState } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { useRouter } from "next/navigation";
+import { auth } from "@/firebaseConfig";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
-  const router = useRouter()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
-      await signInWithEmailAndPassword(auth, email, password)
-      router.push('/') // redirect to home or dashboard
+      await signInWithEmailAndPassword(auth, email, password);
+      router.push("/"); // redirect to home or dashboard
     } catch (err: any) {
-      setError(err.message)
+      setError(err.message);
     }
-  }
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -51,5 +51,5 @@ export default function LoginPage() {
         </button>
       </form>
     </div>
-  )
+  );
 }
