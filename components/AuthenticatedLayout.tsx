@@ -92,11 +92,11 @@ export default function AuthenticatedLayout({
             <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
               {title && (
                 <Typography
-                  variant="h6"
+                  variant="h4"
                   component="h1"
                   sx={{
                     fontWeight: 600,
-                    color: "text.primary",
+                    color: theme.palette.primary.main,
                   }}
                 >
                   {title}

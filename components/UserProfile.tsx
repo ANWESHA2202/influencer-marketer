@@ -186,20 +186,6 @@ export default function UserProfile() {
           </Typography>
         </Box>
 
-        <MenuItem onClick={handleProfileClick}>
-          <ListItemIcon>
-            <ProfileIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText>My Profile</ListItemText>
-        </MenuItem>
-
-        <MenuItem onClick={handleSettingsClick}>
-          <ListItemIcon>
-            <SettingsIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText>Settings</ListItemText>
-        </MenuItem>
-
         <Divider />
 
         <MenuItem onClick={handleLogout} sx={{ color: "error.main" }}>

@@ -80,7 +80,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   return (
     <AuthContext.Provider value={{ user, loading, logout }}>
       {user && !isPublicRoute ? (
-        <AuthenticatedLayout>{children}</AuthenticatedLayout>
+        <AuthenticatedLayout title="Influency">{children}</AuthenticatedLayout>
       ) : (
         children
       )}

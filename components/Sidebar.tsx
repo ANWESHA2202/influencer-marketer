@@ -47,13 +47,6 @@ const navigationItems: NavigationItem[] = [
     path: "/campaigns",
     badge: "3",
   },
-
-  {
-    id: "reports",
-    label: "Analytics",
-    icon: <AnalyticsIcon />,
-    path: "/reports",
-  },
 ];
 
 export default function Sidebar() {

@@ -1,5 +1,5 @@
 "use client";
-import React, { useMemo, ReactNode } from "react";
+import React, { useMemo, ReactNode, useState } from "react";
 import { AgGridReact } from "ag-grid-react";
 import {
   ColDef,
@@ -7,10 +7,13 @@ import {
   ModuleRegistry,
   AllCommunityModule,
   themeQuartz,
-  GridApi,
 } from "ag-grid-community";
-import { Box, Chip } from "@mui/material";
+import { Box, Chip, Menu, MenuItem, CircularProgress } from "@mui/material";
+import { KeyboardArrowDown } from "@mui/icons-material";
 import { snakeToTitle } from "../home/utils";
+import { axiosWithAuth } from "@/lib/axios";
+import useCreate from "@/hooks/useCreate";
+import { URLMapping } from "@/lib/constants";
 
 // Register AG Grid modules
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -77,9 +80,51 @@ export interface DataTableProps<T = any> {
 }
 
 // Common cell renderers
-export const StatusRenderer = (params: any) => {
-  const status = params.value;
+export const StatusRenderer = (
+  params: any,
+  onStatusChange?: (newStatus: string) => void
+) => {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const campaignId = params.data.id;
+  const [status, setStatus] = useState(params.value);
+
   if (!status) return "-";
+
+  const open = Boolean(anchorEl);
+
+  const { create: changeStatus, isPending: changeStatusLoading } = useCreate(
+    axiosWithAuth,
+    `${URLMapping["campaigns"]}${campaignId}/status-update`,
+    "withHeaders",
+    {
+      onSuccess: (data) => {
+        setStatus((prev: "draft" | "active") =>
+          prev === "draft" ? "active" : "draft"
+        );
+        handleClose();
+      },
+      onError: (error) => {
+        console.error("Failed to create User:", error);
+      },
+    }
+  );
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    event.stopPropagation();
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleStatusSelect = (newStatus: string) => {
+    changeStatus({
+      status: newStatus,
+    });
+  };
 
   const getStatusColor = (status: string) => {
     const statusLower = status.toLowerCase();
@@ -109,13 +154,66 @@ export const StatusRenderer = (params: any) => {
   };
 
   return (
-    <Chip
-      title={status}
-      label={status.charAt(0).toUpperCase() + status.slice(1)}
-      color={getStatusColor(status) as any}
-      size="small"
-      variant="filled"
-    />
+    <div
+      style={{
+        position: "relative",
+        display: "inline-flex",
+        alignItems: "center",
+        cursor: "pointer",
+      }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onClick={handleClick}
+    >
+      <Chip
+        title={status}
+        label={status?.charAt(0)?.toUpperCase() + status?.slice(1)}
+        color={getStatusColor(status) as any}
+        size="small"
+        variant="filled"
+        style={{
+          paddingRight: isHovered ? "24px" : "12px",
+          transition: "padding-right 0.2s ease",
+        }}
+      />
+      {isHovered ? (
+        <KeyboardArrowDown
+          style={{
+            position: "absolute",
+            right: "4px",
+            fontSize: "16px",
+            color: "rgba(0, 0, 0, 0.6)",
+            transition: "opacity 0.2s ease",
+          }}
+        />
+      ) : changeStatusLoading ? (
+        <CircularProgress size={16} />
+      ) : null}
+      <Menu
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        onClick={(e) => e.stopPropagation()}
+        PaperProps={{
+          style: {
+            minWidth: "120px",
+          },
+        }}
+      >
+        <MenuItem
+          onClick={() => handleStatusSelect("active")}
+          style={{ fontSize: "14px" }}
+        >
+          Active
+        </MenuItem>
+        <MenuItem
+          onClick={() => handleStatusSelect("draft")}
+          style={{ fontSize: "14px" }}
+        >
+          Draft
+        </MenuItem>
+      </Menu>
+    </div>
   );
 };
 
