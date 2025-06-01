@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import CampaignInfluencerTable, {
   CampaignInfluencer,
 } from "./CampaignInfluencerTable";
-import { Button } from "@mui/material";
+import { Button, Modal } from "@mui/material";
 import CompareArrowsRoundedIcon from "@mui/icons-material/CompareArrowsRounded";
 import NegotiationComparison from "./NegotiationComparison";
 import { useFetchData } from "@/hooks";
 import { axiosWithAuth } from "@/lib/axios";
 import { URLMapping } from "@/lib/constants";
+import StripeContainer from "../payments/StripeContainer";
 
 const creatordata: CampaignInfluencer[] = [
   {
@@ -47,6 +48,7 @@ const creatordata: CampaignInfluencer[] = [
 const InfluencerTracker = ({ campaignId }: { campaignId: string }) => {
   const [creatorsConnected, setCreatorsConnected] = useState(creatordata);
   const [showComparison, setShowComparison] = useState(false);
+  const [isPayment, setIsPayment] = useState(false);
   const url = URLMapping["campaign-creator"].replace(
     "{campaign_id}",
     campaignId
@@ -73,6 +75,9 @@ const InfluencerTracker = ({ campaignId }: { campaignId: string }) => {
     },
   });
 
+  const handlePaymentInitiate = () => {
+    setIsPayment(true);
+  };
   return (
     <div>
       <div className="flex justify-between items-center mb-8 stagger-item">
@@ -111,6 +116,7 @@ const InfluencerTracker = ({ campaignId }: { campaignId: string }) => {
         creatorsConnected={creatorsConnected}
         loading={false}
         onCreatorSelected={() => {}}
+        onPaymentInitiated={handlePaymentInitiate}
       />
 
       <NegotiationComparison
@@ -118,6 +124,9 @@ const InfluencerTracker = ({ campaignId }: { campaignId: string }) => {
         onClose={() => setShowComparison(false)}
         open={showComparison}
       />
+      <Modal open={isPayment}>
+        <StripeContainer />
+      </Modal>
     </div>
   );
 };

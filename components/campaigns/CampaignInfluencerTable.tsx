@@ -2,6 +2,7 @@
 
 import React, { useMemo, useState } from "react";
 import DataTable, { TableColumn } from "../common/DataTable";
+import { Button } from "@mui/material";
 
 export interface CampaignInfluencer {
   campaign_id: number;
@@ -58,6 +59,7 @@ const creatordata: CampaignInfluencer[] = [
 interface CampaignCreatorTableProps {
   creatorsConnected: CampaignInfluencer[];
   onCreatorSelected?: (i: CampaignInfluencer) => void;
+  onPaymentInitiated?: () => void;
   loading?: boolean;
 }
 
@@ -65,11 +67,12 @@ const CampaignInfluencerTable: React.FC<CampaignCreatorTableProps> = ({
   creatorsConnected,
   onCreatorSelected,
   loading,
+  onPaymentInitiated,
 }) => {
-  const columns: TableColumn<CampaignInfluencer>[] = useMemo(
+  const columns: TableColumn[] = useMemo(
     () => [
       {
-        headerName: "Creator ID",
+        headerName: "Creator",
         field: "creator_id",
         flex: 1,
         cellRenderer: (params: any) => {
@@ -151,6 +154,28 @@ const CampaignInfluencerTable: React.FC<CampaignCreatorTableProps> = ({
         flex: 1,
         cellRenderer: (params: any) => {
           return <></>;
+        },
+      },
+
+      {
+        headerName: "Contract Status",
+        field: "contract_status",
+        flex: 1,
+        cellRenderer: (params: any) => {
+          return <Button variant="text">Send</Button>;
+        },
+      },
+
+      {
+        headerName: "Payment",
+        field: "payment_status",
+        flex: 1,
+        cellRenderer: (params: any) => {
+          return (
+            <Button variant="contained" onClick={onPaymentInitiated}>
+              Pay
+            </Button>
+          );
         },
       },
     ],
