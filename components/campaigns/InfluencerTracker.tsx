@@ -58,7 +58,7 @@ const InfluencerTracker = ({
   const [creatorsConnected, setCreatorsConnected] = useState([]);
   const [showComparison, setShowComparison] = useState(false);
   const [isPayment, setIsPayment] = useState(false);
-
+  const [isLoadingTableData, setIsLoadingTableData] = useState(true);
   const url = URLMapping["campaign-creator"].replace(
     "{campaign_id}",
     campaignId
