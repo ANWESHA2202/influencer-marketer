@@ -7,6 +7,9 @@ export const URLMapping = {
   logout: "/auth/logout",
   "refresh-token": "/auth/refresh",
 
+  // Creators
+  "creators-list": "/creators/search",
+
   // User Management
   profile: "/user/profile",
   "update-profile": "/user/profile",

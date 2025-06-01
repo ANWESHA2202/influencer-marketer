@@ -1,13 +1,19 @@
 "use client";
 
 import React, { useState } from "react";
-import { Chip } from "@mui/material";
+import { Chip, Avatar } from "@mui/material";
 import {
   Instagram as InstagramIcon,
   YouTube as YouTubeIcon,
   Twitter as TwitterIcon,
   VideoLibrary as TikTokIcon,
   Verified as VerifiedIcon,
+  Star as StarIcon,
+  StarHalf as StarHalfIcon,
+  StarBorder as StarBorderIcon,
+  TrendingUp as TrendingUpIcon,
+  TrendingDown as TrendingDownIcon,
+  Person as PersonIcon,
 } from "@mui/icons-material";
 import { formatNumber } from "./utils";
 import { Creator } from "./types";
@@ -17,8 +23,44 @@ interface CreatorCardProps {
   onClick: () => void;
 }
 
+// Function to get match score icon and color
+const getMatchScoreDisplay = (score: number | null | undefined) => {
+  if (!score) return null;
+
+  let icon, color, label;
+
+  if (score >= 95) {
+    icon = <StarIcon className="text-yellow-400" />;
+    color = "bg-yellow-500/90";
+    label = "Perfect";
+  } else if (score >= 80) {
+    icon = <StarIcon className="text-green-400" />;
+    color = "bg-green-500/90";
+    label = "Best";
+  } else if (score >= 60) {
+    icon = <TrendingUpIcon className="text-blue-400" />;
+    color = "bg-blue-500/90";
+    label = "Good";
+  } else if (score >= 30) {
+    icon = <StarHalfIcon className="text-orange-400" />;
+    color = "bg-orange-500/90";
+    label = "Medium";
+  } else {
+    icon = <TrendingDownIcon className="text-red-400" />;
+    color = "bg-red-500/90";
+    label = "Low";
+  }
+
+  return { icon, color, label, score };
+};
+
 const CreatorCard: React.FC<CreatorCardProps> = ({ creator, onClick }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [imageError, setImageError] = useState(false);
+  const matchDisplay = getMatchScoreDisplay(creator.match_score);
+  console.log("creator", creator);
+
+  const hasValidImage = creator.profile_image_url && !imageError;
 
   return (
     <div
@@ -28,14 +70,30 @@ const CreatorCard: React.FC<CreatorCardProps> = ({ creator, onClick }) => {
       onClick={onClick}
       style={{ aspectRatio: "9/16", height: "400px" }}
     >
-      {/* Profile Image */}
-      <img
-        src={creator.profile_image_url}
-        alt={creator.full_name}
-        className={`w-full h-full object-cover transition-transform duration-300 ${
-          isHovered ? "scale-105" : "scale-100"
-        }`}
-      />
+      {/* Profile Image or Default Avatar */}
+      {hasValidImage ? (
+        <img
+          src={creator.profile_image_url}
+          alt={creator.full_name}
+          className={`w-full h-full object-cover transition-transform duration-300 ${
+            isHovered ? "scale-105" : "scale-100"
+          }`}
+          onError={() => setImageError(true)}
+        />
+      ) : (
+        <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-500 flex items-center justify-center">
+          <Avatar
+            sx={{
+              width: 120,
+              height: 120,
+              bgcolor: "rgba(255,255,255,0.9)",
+              color: "gray",
+            }}
+          >
+            <PersonIcon sx={{ fontSize: 60 }} />
+          </Avatar>
+        </div>
+      )}
 
       {/* Gradient Overlay */}
       <div
@@ -46,9 +104,25 @@ const CreatorCard: React.FC<CreatorCardProps> = ({ creator, onClick }) => {
         }`}
       />
 
+      {/* Match Score Badge */}
+      {matchDisplay && (
+        <div
+          className={`absolute top-3 right-3 ${matchDisplay.color} rounded-full px-2 py-1 flex items-center gap-1`}
+        >
+          {matchDisplay.icon}
+          <span className="text-white text-xs font-semibold">
+            {matchDisplay.score}%
+          </span>
+        </div>
+      )}
+
       {/* Verification Badge */}
       {creator.is_verified && (
-        <div className="absolute top-3 right-3 bg-white/90 rounded-full p-1">
+        <div
+          className={`absolute ${
+            matchDisplay ? "top-12" : "top-3"
+          } right-3 bg-white/90 rounded-full p-1`}
+        >
           <VerifiedIcon className="text-blue-500 text-xl" />
         </div>
       )}

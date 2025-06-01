@@ -22,16 +22,16 @@ export const categories = [
 ];
 
 export const locations = [
-  "New York, NY",
-  "Los Angeles, CA",
-  "Chicago, IL",
-  "Houston, TX",
-  "Phoenix, AZ",
-  "Philadelphia, PA",
-  "San Antonio, TX",
-  "San Diego, CA",
-  "Dallas, TX",
-  "San Jose, CA",
+  "Mumbai, Maharashtra",
+  "Delhi, Delhi",
+  "Bangalore, Karnataka",
+  "Hyderabad, Telangana",
+  "Chennai, Tamil Nadu",
+  "Kolkata, West Bengal",
+  "Pune, Maharashtra",
+  "Ahmedabad, Gujarat",
+  "Jaipur, Rajasthan",
+  "Surat, Gujarat",
 ];
 
 export const genders = ["Male", "Female", "Non-binary", "Other"];
