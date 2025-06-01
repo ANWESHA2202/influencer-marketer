@@ -2,16 +2,14 @@
 export const URLMapping = {
   // Authentication
   login: "/auth/login",
-  register: "/auth/register/user",
-  registerCreator: "/auth/register/creator",
-  logout: "/auth/logout",
-  "refresh-token": "/auth/refresh",
+  register: "/auth/register/user/",
+  registerCreator: "/auth/register/creator/",
 
   // Creators
-  "creators-list": "/creators/search",
+  "creators-list": "/creators/search/",
 
   // Campaigns
-  campaigns: "/campaigns",
+  campaigns: "/campaigns/",
   "campaign-details": "/campaigns/:id",
   "create-campaign": "/campaigns",
   "update-campaign": "/campaigns/:id",

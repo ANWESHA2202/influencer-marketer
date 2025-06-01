@@ -52,7 +52,6 @@ const CampaignsComponent = ({
   setSelectedCampaign: (campaign: any) => void;
 }) => {
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const router = useRouter();
 
   const {
@@ -62,7 +61,6 @@ const CampaignsComponent = ({
     error: createCampaignError,
   } = useCreate(axiosWithAuth, URLMapping["campaigns"], "withHeaders", {
     onSuccess: (data) => {
-      alert("Campaign created successfully!");
       setIsFormOpen(false);
       refetchCampaignData();
     },
@@ -79,12 +77,10 @@ const CampaignsComponent = ({
   } = useFetchData(axiosWithAuth, URLMapping["campaigns"], "withHeaders", {
     enabled: true,
     select: (data) => {
-      console.log(data, "data");
-      return data || [];
+      return data?.data || [];
     },
     onSuccess: (data) => {
       console.log("Campaigns fetched:", data);
-      setCampaigns(data || []);
     },
     onError: (error) => {
       console.error("Failed to fetch campaigns:", error);
@@ -144,7 +140,7 @@ const CampaignsComponent = ({
             onCampaignSelect={handleCampaignSelect}
             loading={true}
           />
-        ) : campaigns.length === 0 ? (
+        ) : campaignData?.length === 0 ? (
           <EmptyView
             title="No campaigns"
             subtitle="Get started by creating a new campaign."
@@ -154,7 +150,7 @@ const CampaignsComponent = ({
           />
         ) : (
           <CampaignTable
-            campaigns={campaigns}
+            campaigns={campaignData}
             onCampaignSelect={handleCampaignSelect}
             loading={false}
           />

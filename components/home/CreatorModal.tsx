@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Modal, IconButton, Chip, Avatar, Button } from "@mui/material";
 import {
   Instagram as InstagramIcon,
@@ -15,6 +15,9 @@ import {
 } from "@mui/icons-material";
 import { formatNumber } from "./utils";
 import { Creator } from "./types";
+import useFetchData from "@/hooks/useFetchData";
+import { axiosWithAuth } from "@/lib/axios";
+import { URLMapping } from "@/lib/constants";
 
 interface CreatorModalProps {
   creator: Creator | null;
@@ -28,6 +31,26 @@ const CreatorModal: React.FC<CreatorModalProps> = ({
   onClose,
 }) => {
   if (!creator) return null;
+
+  const {
+    data: campaignData,
+    isLoading: campaignDataLoading,
+    refetch: refetchCampaignData,
+    error: campaignDataError,
+  } = useFetchData(axiosWithAuth, URLMapping["campaigns"], "withHeaders", {
+    enabled: false,
+    select: (data) => {
+      console.log(data, "data");
+      return data || [];
+    },
+    onError: (error) => {
+      console.error("Failed to fetch campaigns:", error);
+    },
+  });
+
+  useEffect(() => {
+    refetchCampaignData();
+  }, []);
 
   return (
     <Modal
@@ -199,18 +222,14 @@ const CreatorModal: React.FC<CreatorModalProps> = ({
             </div>
 
             {/* Action Buttons */}
-            <div className="flex gap-2 mt-6">
-              <Button
-                variant="contained"
-                fullWidth
-                className="bg-indigo-600 hover:bg-indigo-700"
-              >
-                Contact Creator
-              </Button>
-              <Button variant="outlined" fullWidth>
-                View Portfolio
-              </Button>
-            </div>
+
+            <Button
+              variant="contained"
+              fullWidth
+              className="bg-indigo-600 hover:bg-indigo-700"
+            >
+              Contact Creator
+            </Button>
           </div>
         </div>
       </div>
