@@ -58,7 +58,7 @@ const InfluencerTracker = ({
   const [creatorsConnected, setCreatorsConnected] = useState([]);
   const [showComparison, setShowComparison] = useState(false);
   const [isPayment, setIsPayment] = useState(false);
-  const [isLoadingTableData, setIsLoadingTableData] = useState(true);
+
   const url = URLMapping["campaign-creator"].replace(
     "{campaign_id}",
     campaignId
@@ -75,7 +75,7 @@ const InfluencerTracker = ({
     isLoading: campaignloading,
     refetch: refetchCampaignData,
     error: campaignDataError,
-  } = useFetchData(axiosWithAuth, campaignDetailUrl, "withHeaders", {
+  } = useFetchData(axiosWithAuth, `${campaignDetailUrl}`, "withHeaders", {
     enabled: false,
     select: (data) => {
       return data;

@@ -35,3 +35,10 @@ export const locations = [
 ];
 
 export const genders = ["Male", "Female", "Non-binary", "Other"];
+
+export const snakeToTitle = (str: string) => {
+  return (
+    str?.replace(/_/g, " ").charAt(0).toUpperCase() +
+    str?.replace(/_/g, " ").slice(1)
+  );
+};
