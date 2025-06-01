@@ -46,40 +46,16 @@ const navigationItems: NavigationItem[] = [
     path: "/campaigns",
     badge: "3",
   },
-  {
-    id: "influencers",
-    label: "Influencers",
-    icon: <PeopleIcon />,
-    path: "/influencers-management",
-  },
+
   {
     id: "reports",
     label: "Reports",
     icon: <AnalyticsIcon />,
     path: "/reports",
   },
-  {
-    id: "hooks-demo",
-    label: "Hooks Demo",
-    icon: <CodeIcon />,
-    path: "/demo",
-  },
 ];
 
-const bottomNavigationItems: NavigationItem[] = [
-  {
-    id: "settings",
-    label: "Settings",
-    icon: <SettingsIcon />,
-    path: "/settings",
-  },
-  {
-    id: "help",
-    label: "Help & Support",
-    icon: <HelpIcon />,
-    path: "/help",
-  },
-];
+const bottomNavigationItems: NavigationItem[] = [];
 
 export default function Sidebar() {
   const router = useRouter();

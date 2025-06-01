@@ -73,7 +73,7 @@ const CreatorLists = ({ searchParams }: { searchParams: string }) => {
   }
 
   return (
-    <div className="p-6">
+    <div>
       <Grid container spacing={3}>
         {creatorsLoading
           ? // Show skeleton cards while loading

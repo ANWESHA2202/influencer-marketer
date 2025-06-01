@@ -10,6 +10,7 @@ import {
   GridApi,
 } from "ag-grid-community";
 import { Box, Chip } from "@mui/material";
+import { snakeToTitle } from "../home/utils";
 
 // Register AG Grid modules
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -229,7 +230,7 @@ export const BadgeRenderer = (
           color: options?.textColor,
         }}
       >
-        {value}
+        {snakeToTitle(value)}
       </span>
     </div>
   );

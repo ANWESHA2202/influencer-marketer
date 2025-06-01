@@ -1,9 +1,5 @@
-import {
-  useQuery,
-  UseQueryOptions,
-  UseQueryResult,
-} from "@tanstack/react-query";
-import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
+import { useQuery, UseQueryOptions } from "@tanstack/react-query";
+import { AxiosInstance, AxiosResponse } from "axios";
 
 interface UseFetchDataOptions<T = any>
   extends Omit<
@@ -36,8 +32,6 @@ export function useFetchData<T = any>(
     queryKey: [url, headerType],
     queryFn: async (): Promise<AxiosResponse<T>> => {
       try {
-        console.log(`🚀 Starting API call: ${url}`);
-
         const config =
           headerType === "withoutHeaders"
             ? { headers: {} }
@@ -49,22 +43,8 @@ export function useFetchData<T = any>(
 
         const response = await axiosInstance.get<T>(url, config);
 
-        console.log(`✅ API call successful: ${url}`, {
-          status: response.status,
-          dataLength: Array.isArray(response.data)
-            ? response.data.length
-            : "N/A",
-        });
-
         return response;
       } catch (error: any) {
-        console.error(`❌ API call failed: ${url}`,{
-          message: error.message,
-          status: error.response?.status,
-          statusText: error.response?.statusText,
-          data: error.response?.data,
-        });
-
         // Return a safe error response instead of throwing
         // This prevents UI crashes while still allowing React Query to handle the error state
         const safeError = new Error(
@@ -86,15 +66,8 @@ export function useFetchData<T = any>(
     enabled,
     select,
     // Add retry configuration to handle transient errors gracefully
-    retry: (failureCount, error: any) => {
-      // Don't retry on 4xx errors (client errors)
-      if (error?.status >= 400 && error?.status < 500) {
-        return false;
-      }
-      // Retry up to 2 times for other errors
-      return failureCount < 2;
-    },
-    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+    retry: false,
+    retryDelay: 0,
     // Prevent background refetching on window focus for failed queries
     refetchOnWindowFocus: false,
     ...queryOptions,

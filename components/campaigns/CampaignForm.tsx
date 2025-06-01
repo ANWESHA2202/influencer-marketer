@@ -7,6 +7,7 @@ interface CampaignFormProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (data: CampaignFormData) => void;
+  loading?: boolean;
 }
 
 interface CampaignFormData {
@@ -32,6 +33,7 @@ const CampaignForm: React.FC<CampaignFormProps> = ({
   isOpen,
   onClose,
   onSubmit,
+  loading = false,
 }) => {
   const [formData, setFormData] = useState<any>({
     title: "",
@@ -49,6 +51,27 @@ const CampaignForm: React.FC<CampaignFormProps> = ({
   const [targetAudienceText, setTargetAudienceText] = useState("");
   const [contentRequirementsText, setContentRequirementsText] = useState("");
   const [deliverablesText, setDeliverablesText] = useState("");
+
+  // Reset form when drawer is closed
+  React.useEffect(() => {
+    if (!isOpen) {
+      setFormData({
+        title: "",
+        description: "",
+        brand_name: "",
+        campaign_type: "",
+        budget: "",
+        start_date: "",
+        end_date: "",
+        target_audience: "",
+        content_requirements: "",
+        deliverables: "",
+      });
+      setTargetAudienceText("");
+      setContentRequirementsText("");
+      setDeliverablesText("");
+    }
+  }, [isOpen]);
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -86,7 +109,6 @@ const CampaignForm: React.FC<CampaignFormProps> = ({
         },
       };
       onSubmit(finalData);
-      onClose();
     } catch (error) {
       alert("Please ensure JSON fields are properly formatted");
     }
@@ -426,14 +448,16 @@ const CampaignForm: React.FC<CampaignFormProps> = ({
               <div className="flex justify-start space-x-3 pt-6 border-t border-gray-200">
                 <button
                   type="submit"
-                  className="px-4 py-2 text-sm font-medium text-white bg-secondary border border-transparent rounded-md shadow-sm hover:bg-secondary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  disabled={loading}
+                  className="px-4 py-2 text-sm font-medium text-white bg-secondary border border-transparent rounded-md shadow-sm hover:bg-secondary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Create Campaign
+                  {loading ? "Creating..." : "Create Campaign"}
                 </button>
                 <button
                   type="button"
                   onClick={onClose}
-                  className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  disabled={loading}
+                  className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Cancel
                 </button>
