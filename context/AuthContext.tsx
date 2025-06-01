@@ -38,6 +38,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
       setLoading(false);
+      console.log(user);
 
       // Redirect unauthenticated users from protected routes
       if (!user && !isPublicRoute && !loading) {
