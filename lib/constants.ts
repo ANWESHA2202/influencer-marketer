@@ -26,6 +26,7 @@ export const URLMapping = {
   "create-campaign": "/campaigns",
   "update-campaign": "/campaigns/:id",
   "delete-campaign": "/campaigns/:id",
+  "campaign-creator" : "/campaigns/{campaign_id}/creators",
 
   // Analytics
   "campaign-analytics": "/analytics/campaigns/:id",

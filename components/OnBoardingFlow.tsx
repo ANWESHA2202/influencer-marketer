@@ -43,7 +43,7 @@ const steps: Step[] = [
   { label: "Role", key: "role", placeholder: "Enter your role" },
 ];
 
-const BrandInfoStepForm: React.FC<BrandInfoStepFormProps> = ({
+const OnBoardingFlow: React.FC<BrandInfoStepFormProps> = ({
   handleSubmitForm,
   isSaving,
 }) => {
@@ -135,4 +135,4 @@ const BrandInfoStepForm: React.FC<BrandInfoStepFormProps> = ({
   );
 };
 
-export default BrandInfoStepForm;
+export default OnBoardingFlow;
