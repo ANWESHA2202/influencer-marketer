@@ -26,11 +26,9 @@ const StripeContainer = () => {
   };
   return (
     <div className="w-screen h-screen flex justify-center items-center">
-      <CheckoutProvider>
-        <Elements stripe={stripeTestPromise} options={options}>
-          <PaymentForm />
-        </Elements>
-      </CheckoutProvider>
+      <Elements stripe={stripeTestPromise} options={options}>
+        <PaymentForm />
+      </Elements>
     </div>
   );
 };
