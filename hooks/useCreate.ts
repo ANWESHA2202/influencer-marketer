@@ -33,12 +33,6 @@ export function useCreate<TData = any, TVariables = any>(
   const mutation = useMutation({
     mutationFn: async (data: TVariables): Promise<AxiosResponse<TData>> => {
       try {
-        console.log(`🚀 Starting CREATE request: ${url}`, {
-          headerType,
-          dataKeys:
-            typeof data === "object" && data ? Object.keys(data) : "N/A",
-        });
-
         const config =
           headerType === "withoutHeaders"
             ? { headers: {} }
@@ -51,12 +45,6 @@ export function useCreate<TData = any, TVariables = any>(
               };
 
         const response = await axiosInstance.post<TData>(url, data, config);
-
-        console.log(`✅ CREATE request successful: ${url}`, {
-          status: response.status,
-          statusText: response.statusText,
-          hasData: !!response.data,
-        });
 
         return response;
       } catch (error: any) {
@@ -81,17 +69,12 @@ export function useCreate<TData = any, TVariables = any>(
         (safeError as any).originalError = error;
 
         throw safeError;
-      } finally {
-        console.log(`🏁 CREATE request completed: ${url}`);
       }
     },
     onSuccess: async (data, variables, context) => {
       try {
-        console.log(`🎉 CREATE mutation successful for: ${url}`);
-
         // Invalidate related queries safely
         if (invalidateQueries.length > 0) {
-          console.log(`🔄 Invalidating queries:`, invalidateQueries);
           try {
             await Promise.allSettled(
               invalidateQueries.map((queryKey) =>

@@ -5,6 +5,9 @@ import {
   PaymentElement,
 } from "@stripe/react-stripe-js";
 import { useState } from "react";
+import { URLMapping } from "@/lib/constants";
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const CheckoutForm = () => {
   const [isReady, setIsReady] = useState(false);
@@ -16,7 +19,7 @@ const CheckoutForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!stripe || !elements) return;
-    const res = await fetch("http://localhost:4242/create-payment-intent", {
+    const res = await fetch(`${API_URL}/${URLMapping.campaigns}payment`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ amount: 2000 }), // $20.00
@@ -42,7 +45,7 @@ const CheckoutForm = () => {
   return (
     <form onSubmit={handleSubmit} style={{ maxWidth: 700, margin: "auto" }}>
       <PaymentElement
-        onLoaderStart={() => console.log("On load start")}
+        onLoaderStart={() => {}}
         onReady={() => setIsReady(true)}
       />
       {isReady && (

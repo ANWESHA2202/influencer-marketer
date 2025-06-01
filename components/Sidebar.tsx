@@ -56,15 +56,6 @@ const navigationItems: NavigationItem[] = [
   },
 ];
 
-const bottomNavigationItems: NavigationItem[] = [
-  {
-    id: "settings",
-    label: "Settings",
-    icon: <SettingsIcon />,
-    path: "/settings",
-  },
-];
-
 export default function Sidebar() {
   const router = useRouter();
   const pathname = usePathname();
@@ -215,12 +206,6 @@ export default function Sidebar() {
         {/* Main Navigation */}
         <Box sx={{ flexGrow: 1, py: 1 }}>
           <List>{navigationItems.map(renderNavigationItem)}</List>
-        </Box>
-
-        {/* Bottom Navigation */}
-        <Box sx={{ pb: 2 }}>
-          <Divider sx={{ mb: 1, mx: 1.5, opacity: 0.6 }} />
-          <List>{bottomNavigationItems.map(renderNavigationItem)}</List>
         </Box>
       </Box>
     </Drawer>

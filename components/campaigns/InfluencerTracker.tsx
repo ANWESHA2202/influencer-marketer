@@ -80,9 +80,7 @@ const InfluencerTracker = ({
     select: (data) => {
       return data;
     },
-    onSuccess: (data) => {
-      console.log("Campaign Detail Fetched:", data);
-    },
+    onSuccess: (data) => {},
     onError: (error) => {
       console.error("Failed to fetch campaign detail:", error);
     },
@@ -99,9 +97,7 @@ const InfluencerTracker = ({
     select: (data) => {
       return data;
     },
-    onSuccess: (data) => {
-      console.log(data, "on success");
-    },
+    onSuccess: (data) => {},
     onError: (error) => {},
   });
 
@@ -124,9 +120,7 @@ const InfluencerTracker = ({
         })) || []
       );
     },
-    onSuccess: (data) => {
-      console.log("Creators fetched successfully:", data);
-    },
+    onSuccess: (data) => {},
     onError: (error) => {
       console.error("Failed to fetch creators:", error);
     },
@@ -135,7 +129,6 @@ const InfluencerTracker = ({
   const callRefetch = async () => {
     try {
       const { data } = await refetchCampaignData();
-      console.log(data);
       if (data?.data) {
         setSelectedCampaign(data?.data);
       }

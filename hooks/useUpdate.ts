@@ -35,42 +35,30 @@ export function useUpdate<TData = any, TVariables = any>(
   const mutation = useMutation({
     mutationFn: async (data: TVariables): Promise<AxiosResponse<TData>> => {
       try {
-        // Handle URL parameter replacement (e.g., /users/:id)
+        // Handle URL parameter replacement
         let finalUrl = url;
         if (typeof data === "object" && data && "id" in data) {
           finalUrl = url.replace(":id", String((data as any).id));
         }
-
-        console.log(`🚀 Starting ${method} request: ${finalUrl}`, {
-          originalUrl: url,
-          headerType,
-          method,
-          dataKeys:
-            typeof data === "object" && data ? Object.keys(data) : "N/A",
-        });
 
         const config =
           headerType === "withoutHeaders"
             ? { headers: {} }
             : {
                 headers: {
-                  Authorization: `bearer ${localStorage.getItem("token")}`,
+                  "Content-Type": "application/json",
+                  Accept: "application/json",
+                  Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
               };
 
         let response: AxiosResponse<TData>;
 
-        if (method === "PATCH") {
-          response = await axiosInstance.patch<TData>(finalUrl, data, config);
-        } else {
+        if (method === "PUT") {
           response = await axiosInstance.put<TData>(finalUrl, data, config);
+        } else {
+          response = await axiosInstance.patch<TData>(finalUrl, data, config);
         }
-
-        console.log(`✅ ${method} request successful: ${finalUrl}`, {
-          status: response.status,
-          statusText: response.statusText,
-          hasData: !!response.data,
-        });
 
         return response;
       } catch (error: any) {
@@ -86,7 +74,7 @@ export function useUpdate<TData = any, TVariables = any>(
         const safeError = new Error(
           error.response?.data?.message ||
             error.message ||
-            "Failed to update resource"
+            `Failed to ${method.toLowerCase()} resource`
         );
 
         // Add additional error context
@@ -95,17 +83,12 @@ export function useUpdate<TData = any, TVariables = any>(
         (safeError as any).originalError = error;
 
         throw safeError;
-      } finally {
-        console.log(`🏁 ${method} request completed: ${url}`);
       }
     },
     onSuccess: async (data, variables, context) => {
       try {
-        console.log(`🎉 ${method} mutation successful for: ${url}`);
-
         // Invalidate related queries safely
         if (invalidateQueries.length > 0) {
-          console.log(`🔄 Invalidating queries:`, invalidateQueries);
           try {
             await Promise.allSettled(
               invalidateQueries.map((queryKey) =>
