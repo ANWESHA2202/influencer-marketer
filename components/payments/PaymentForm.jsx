@@ -1,26 +1,42 @@
 import { Button } from "@mui/material";
-import { useCheckout, PaymentElement } from "@stripe/react-stripe-js";
+import {
+  useStripe,
+  useElements,
+  PaymentElement,
+} from "@stripe/react-stripe-js";
 import { useState } from "react";
 
 const CheckoutForm = () => {
-  // const checkout = useCheckout();
   const [isReady, setIsReady] = useState(false);
+  const stripe = useStripe();
+  const elements = useElements();
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
   const handleSubmit = async (event) => {
-    // We don't want to let default form submission happen here,
-    // which would refresh the page.
     event.preventDefault();
+    if (!stripe || !elements) return;
+    const res = await fetch("http://localhost:4242/create-payment-intent", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ amount: 2000 }), // $20.00
+    });
 
-    const result = await checkout.confirm();
+    const { clientSecret } = await res.json();
 
-    if (result.type === "error") {
-      // Show error to your customer (for example, payment details incomplete)
-      console.log(result.error.message);
-    } else {
-      // Your customer will be redirected to your `return_url`. For some payment
-      // methods like iDEAL, your customer will be redirected to an intermediate
-      // site first to authorize the payment, then redirected to the `return_url`.
+    const result = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: {
+        card: elements.getElement(CardElement),
+      },
+    });
+
+    if (result.error) {
+      setMessage(result.error.message);
+    } else if (result.paymentIntent.status === "succeeded") {
+      setMessage("Payment successful!");
     }
+
+    setLoading(false);
   };
 
   return (
@@ -30,10 +46,16 @@ const CheckoutForm = () => {
         onReady={() => setIsReady(true)}
       />
       {isReady && (
-        <Button variant="contained" sx={{ width: "100%", marginTop: "0.2em" }}>
-          Submit
+        <Button
+          variant="contained"
+          sx={{ width: "100%", marginTop: "0.2em" }}
+          onClick={handleSubmit}
+          disabled={!stripe || loading}
+        >
+          {loading ? "Processing…" : "Pay $20"}
         </Button>
       )}
+      {message && <p>{message}</p>}
     </form>
   );
 };
