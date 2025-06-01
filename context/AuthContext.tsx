@@ -42,7 +42,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       console.log("user", user);
       setLoading(false);
+      // @ts-ignore
       if (user?.accessToken) {
+        // @ts-ignore
         localStorage.setItem("token", user?.accessToken);
       }
 
