@@ -17,9 +17,15 @@ interface CampaignFormData {
   budget: number | "";
   start_date: string;
   end_date: string;
-  target_audience: Record<string, any>;
-  content_requirements: Record<string, any>;
-  deliverables: Record<string, any>;
+  target_audience: {
+    value: string;
+  };
+  content_requirements: {
+    value: string;
+  };
+  deliverables: {
+    value: string;
+  };
 }
 
 const CampaignForm: React.FC<CampaignFormProps> = ({
@@ -27,7 +33,7 @@ const CampaignForm: React.FC<CampaignFormProps> = ({
   onClose,
   onSubmit,
 }) => {
-  const [formData, setFormData] = useState<CampaignFormData>({
+  const [formData, setFormData] = useState<any>({
     title: "",
     description: "",
     brand_name: "",
@@ -35,9 +41,9 @@ const CampaignForm: React.FC<CampaignFormProps> = ({
     budget: "",
     start_date: "",
     end_date: "",
-    target_audience: {},
-    content_requirements: {},
-    deliverables: {},
+    target_audience: "",
+    content_requirements: "",
+    deliverables: "",
   });
 
   const [targetAudienceText, setTargetAudienceText] = useState("");
@@ -50,7 +56,7 @@ const CampaignForm: React.FC<CampaignFormProps> = ({
     >
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
+    setFormData((prev: any) => ({
       ...prev,
       [name]: name === "budget" ? (value === "" ? "" : Number(value)) : value,
     }));
@@ -58,7 +64,7 @@ const CampaignForm: React.FC<CampaignFormProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
+    console.log("formData", formData);
     // Parse JSON fields
     try {
       const finalData = {
@@ -67,13 +73,17 @@ const CampaignForm: React.FC<CampaignFormProps> = ({
           typeof formData.budget === "string"
             ? Number(formData.budget) || 0
             : formData.budget,
-        target_audience: targetAudienceText
-          ? JSON.parse(targetAudienceText)
-          : {},
-        content_requirements: contentRequirementsText
-          ? JSON.parse(contentRequirementsText)
-          : {},
-        deliverables: deliverablesText ? JSON.parse(deliverablesText) : {},
+        target_audience: {
+          value: targetAudienceText,
+        },
+
+        content_requirements: {
+          value: contentRequirementsText,
+        },
+
+        deliverables: {
+          value: deliverablesText,
+        },
       };
       onSubmit(finalData);
       onClose();
@@ -339,14 +349,14 @@ const CampaignForm: React.FC<CampaignFormProps> = ({
                 htmlFor="target_audience"
                 className="block text-sm font-medium text-gray-700 mb-2"
               >
-                Target Audience (JSON format)
+                Target Audience
               </label>
               <textarea
                 id="target_audience"
-                rows={3}
+                rows={4}
                 value={targetAudienceText}
                 onChange={(e) => setTargetAudienceText(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none font-mono text-sm transition-colors"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none text-sm transition-colors"
                 onFocus={(e) => {
                   e.target.style.borderColor = "#6366F1";
                   e.target.style.borderWidth = "1px";
@@ -355,7 +365,7 @@ const CampaignForm: React.FC<CampaignFormProps> = ({
                   e.target.style.borderColor = "#d1d5db";
                   e.target.style.borderWidth = "1px";
                 }}
-                placeholder='{"age_range": "18-35", "interests": ["fashion", "lifestyle"]}'
+                placeholder={`• Age range: 18-35\n• Gender: All\n• Interests: Fashion, lifestyle, beauty\n• Location: Urban areas`}
               />
             </div>
 
@@ -365,14 +375,14 @@ const CampaignForm: React.FC<CampaignFormProps> = ({
                 htmlFor="content_requirements"
                 className="block text-sm font-medium text-gray-700 mb-2"
               >
-                Content Requirements (JSON format)
+                Content Requirements
               </label>
               <textarea
                 id="content_requirements"
-                rows={3}
+                rows={4}
                 value={contentRequirementsText}
                 onChange={(e) => setContentRequirementsText(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none font-mono text-sm transition-colors"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none text-sm transition-colors"
                 onFocus={(e) => {
                   e.target.style.borderColor = "#6366F1";
                   e.target.style.borderWidth = "1px";
@@ -381,7 +391,7 @@ const CampaignForm: React.FC<CampaignFormProps> = ({
                   e.target.style.borderColor = "#d1d5db";
                   e.target.style.borderWidth = "1px";
                 }}
-                placeholder='{"format": "video", "duration": "30-60s", "style": "casual"}'
+                placeholder={`• Format: Video content\n• Duration: 30-60 seconds\n• Style: Casual and authentic\n• Include product showcase`}
               />
             </div>
 
@@ -391,14 +401,14 @@ const CampaignForm: React.FC<CampaignFormProps> = ({
                 htmlFor="deliverables"
                 className="block text-sm font-medium text-gray-700 mb-2"
               >
-                Deliverables (JSON format)
+                Deliverables
               </label>
               <textarea
                 id="deliverables"
-                rows={3}
+                rows={4}
                 value={deliverablesText}
                 onChange={(e) => setDeliverablesText(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none font-mono text-sm transition-colors"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none text-sm transition-colors"
                 onFocus={(e) => {
                   e.target.style.borderColor = "#6366F1";
                   e.target.style.borderWidth = "1px";
@@ -407,7 +417,7 @@ const CampaignForm: React.FC<CampaignFormProps> = ({
                   e.target.style.borderColor = "#d1d5db";
                   e.target.style.borderWidth = "1px";
                 }}
-                placeholder='{"posts": 3, "stories": 5, "reels": 2}'
+                placeholder={`• 3 Instagram posts\n• 5 Instagram stories\n• 2 Instagram reels\n• Usage rights for 6 months`}
               />
             </div>
 

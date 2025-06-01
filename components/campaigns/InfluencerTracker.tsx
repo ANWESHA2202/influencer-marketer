@@ -60,9 +60,7 @@ const InfluencerTracker = ({
     campaignId
   );
 
-  console.log(selectedCampaign, "selected campaign");
-
-  // Fetch  Campaigns creator
+  // Fetch Campaigns creator
   const {
     data: creatorsData,
     isLoading: loading,
@@ -71,9 +69,9 @@ const InfluencerTracker = ({
   } = useFetchData(axiosWithAuth, url, "withHeaders", {
     enabled: true,
     select: (data) => {
-      // Transform the data
-      console.log(data);
-      return [];
+      // Optional transformation logic here
+      console.log("Raw data in select:", data);
+      return data; // Make sure you're not returning empty array unless intentional
     },
     onSuccess: (data) => {
       console.log("Campaigns Creator fetched:", data);
@@ -83,6 +81,10 @@ const InfluencerTracker = ({
     },
   });
 
+  console.log(
+    { creatorsConnected, creatorsData, loading, creatorDataError },
+    "THIS IS "
+  );
   const handlePaymentInitiate = () => {
     setIsPayment(true);
   };

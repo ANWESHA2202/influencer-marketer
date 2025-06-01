@@ -24,4 +24,5 @@ export interface Creator {
   media_kit_url: string;
   created_at: string;
   updated_at: string;
+  match_score?: number | null;
 }

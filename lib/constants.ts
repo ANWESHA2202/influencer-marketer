@@ -7,15 +7,8 @@ export const URLMapping = {
   logout: "/auth/logout",
   "refresh-token": "/auth/refresh",
 
-  // User Management
-  profile: "/user/profile",
-  "update-profile": "/user/profile",
-
-  // Influencers
-  influencers: "/influencers",
-  "influencer-details": "/influencers/:id",
-  "influencer-search": "/influencers/search",
-  "influencer-categories": "/influencers/categories",
+  // Creators
+  "creators-list": "/creators/search",
 
   // Campaigns
   campaigns: "/campaigns",
@@ -23,7 +16,7 @@ export const URLMapping = {
   "create-campaign": "/campaigns",
   "update-campaign": "/campaigns/:id",
   "delete-campaign": "/campaigns/:id",
-  "campaign-creator" : "/campaigns/{campaign_id}/creators",
+  "campaign-creator": "/campaigns/{campaign_id}/creators",
 
   // Analytics
   "campaign-analytics": "/analytics/campaigns/:id",

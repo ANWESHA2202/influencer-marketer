@@ -32,6 +32,7 @@ export default function SignupPage() {
   const [isUserDataProcess, setIsUserDataProcess] = useState(false);
   const theme = useTheme();
   const [userCreationError, setUserCreationError] = useState("");
+  const [generatedUserId, setGeneratedUserId] = useState("");
 
   const {
     create: createUser,
@@ -66,6 +67,8 @@ export default function SignupPage() {
     e.preventDefault();
     try {
       setSaving(true);
+      const res = await createUserWithEmailAndPassword(auth, email, password);
+      setGeneratedUserId(res?.user?.uid || "");
       setIsUserDataProcess(true);
     } catch (err: any) {
       setError(err.message);
@@ -77,7 +80,6 @@ export default function SignupPage() {
   const handleBrandDataSubmit = async (data: any) => {
     try {
       const { fullName, companyName, role, userType } = data;
-      await createUserWithEmailAndPassword(auth, email, password);
       const username = generateUsername(email);
       createUser({
         email: email,
@@ -87,6 +89,8 @@ export default function SignupPage() {
         password: password,
         username,
         userType,
+        uid: generatedUserId,
+        phone_number: "9896316134",
       });
     } catch (e) {
       console.log("Error in Registering User", e);
