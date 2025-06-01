@@ -58,6 +58,7 @@ const InfluencerTracker = ({
   const [creatorsConnected, setCreatorsConnected] = useState([]);
   const [showComparison, setShowComparison] = useState(false);
   const [isPayment, setIsPayment] = useState(false);
+  const [isLoadingTableData, setIsLoadingTableData] = useState(true);
   const url = URLMapping["campaign-creator"].replace(
     "{campaign_id}",
     campaignId
@@ -66,7 +67,9 @@ const InfluencerTracker = ({
     ":id",
     campaignId
   );
-
+  const allCreatorApiUrl = `${
+    URLMapping["creators-list"]
+  }?limit=20&query=${" "}`;
   const {
     data: campaignDetail,
     isLoading: campaignloading,
@@ -78,10 +81,10 @@ const InfluencerTracker = ({
       return data;
     },
     onSuccess: (data) => {
-      console.log("Campaigns Creator fetched:", data);
+      console.log("Campaign Detail Fetched:", data);
     },
     onError: (error) => {
-      console.error("Failed to fetch campaigns creator:", error);
+      console.error("Failed to fetch campaign detail:", error);
     },
   });
 
@@ -102,10 +105,37 @@ const InfluencerTracker = ({
     onError: (error) => {},
   });
 
-  // console.log(
-  //   { creatorsConnected, creatorsData, loading, creatorDataError },
-  //   "THIS IS Creator"
-  // );
+  const {
+    data: creatorsApiData,
+    isLoading: creatorsLoading,
+    refetch: refetchCreators,
+    error: creatorsError,
+  } = useFetchData(axiosWithAuth, allCreatorApiUrl, "withHeaders", {
+    enabled: false,
+    select: (data) => {
+      // Transform API data to match Creator interface and add similarity scores
+      return (
+        data?.data?.creators?.map((creator: any, index: number) => ({
+          ...creator,
+          // Add similarity score as match percentage
+          match_score: data?.data?.similarity_scores?.[index]
+            ? Math.round(data?.data?.similarity_scores[index] * 100)
+            : null,
+        })) || []
+      );
+    },
+    onSuccess: (data) => {
+      console.log("Creators fetched successfully:", data);
+    },
+    onError: (error) => {
+      console.error("Failed to fetch creators:", error);
+    },
+  });
+
+  console.log(
+    { creatorsApiData, creatorsLoading, creatorsError },
+    "THIS IS ALL Creator"
+  );
 
   console.log(
     { campaignDataError, campaignloading, campaignDetail },
@@ -119,6 +149,9 @@ const InfluencerTracker = ({
       if (data?.data) {
         setSelectedCampaign(data?.data);
       }
+      const allCreators = await refetchCreators();
+
+      console.log(allCreators);
       const creators = await refetchCreatorData();
       if (creators.data.data) {
         setCreatorsConnected(creators.data.data);
