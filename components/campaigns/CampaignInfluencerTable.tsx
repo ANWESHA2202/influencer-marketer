@@ -212,7 +212,6 @@ const CampaignInfluencerTable: React.FC<CampaignCreatorTableProps> = ({
         field: "contract_status",
         flex: 1,
         cellRenderer: (params: any) => {
-          console.log(params);
           return !["cancelled", "declined"]?.includes(params.data.status) ? (
             <Button variant="text">Send</Button>
           ) : (

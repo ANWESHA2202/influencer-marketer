@@ -178,8 +178,6 @@ const InfluencerTracker = ({
     setIsPayment(true);
   };
 
-  console.log(creatorsConnected, "creator");
-
   return (
     <div>
       <div className="flex justify-between items-center mb-8 stagger-item">
