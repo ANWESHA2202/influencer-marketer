@@ -5,25 +5,25 @@ import { createTheme, Theme } from "@mui/material/styles";
 // Professional Influencer Marketing Platform Color Palette
 const colors = {
   // Core brand colors - sophisticated and trustworthy
-  primary: "#6366F1", // Indigo - professional, trustworthy, tech-forward
-  primaryHover: "#4F46E5",
-  primaryPressed: "#4338CA",
-  primaryLight: "#A5B4FC",
-  primaryMuted: "#E0E7FF",
+  primary: "#06B6D4", // Cyan - data, analytics, insights
+  primaryHover: "#0891B2",
+  primaryPressed: "#0E7490",
+  primaryLight: "#67E8F9",
+  primaryMuted: "#CFFAFE",
 
   // Secondary brand colors - creativity and engagement
-  secondary: "#EC4899", // Pink - creativity, social media, engagement
-  secondaryHover: "#DB2777",
-  secondaryPressed: "#BE185D",
-  secondaryLight: "#F9A8D4",
-  secondaryMuted: "#FCE7F3",
+  secondary: "#3B82F6", //
+  secondaryHover: "#2563EB",
+  secondaryPressed: "#1D4ED8",
+  secondaryLight: "#93C5FD",
+  secondaryMuted: "#DBEAFE",
 
   // Accent colors for data and insights
-  accent: "#06B6D4", // Cyan - data, analytics, insights
-  accentHover: "#0891B2",
-  accentPressed: "#0E7490",
-  accentLight: "#67E8F9",
-  accentMuted: "#CFFAFE",
+  accent: "#6366F1", // Indigo - professional, trustworthy, tech-forward
+  accentHover: "#4F46E5",
+  accentPressed: "#4338CA",
+  accentLight: "#A5B4FC",
+  accentMuted: "#E0E7FF",
 
   // Status colors - professional and clear
   success: "#10B981", // Emerald - successful campaigns, positive metrics

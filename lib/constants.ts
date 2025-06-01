@@ -2,8 +2,8 @@
 export const URLMapping = {
   // Authentication
   login: "/auth/login",
-  register: "/auth/register/user/",
-  registerCreator: "/auth/register/creator/",
+  register: "/auth/register/user",
+  registerCreator: "/auth/register/creator",
 
   // Creators
   "creators-list": "/creators/search",
@@ -20,15 +20,6 @@ export const URLMapping = {
   "campaign-analytics": "/analytics/campaigns/:id",
   "influencer-analytics": "/analytics/influencers/:id",
   "dashboard-stats": "/analytics/dashboard",
-
-  // Settings
-  "supported-languages": "/settings/languages",
-  countries: "/settings/countries",
-  categories: "/settings/categories",
-
-  // Notifications
-  notifications: "/notifications",
-  "mark-notification-read": "/notifications/:id/read",
 } as const;
 
 // API Response Types

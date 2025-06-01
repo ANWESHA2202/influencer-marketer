@@ -132,16 +132,6 @@ const InfluencerTracker = ({
     },
   });
 
-  console.log(
-    { creatorsApiData, creatorsLoading, creatorsError },
-    "THIS IS ALL Creator"
-  );
-
-  console.log(
-    { campaignDataError, campaignloading, campaignDetail },
-    "This is Campaign detail"
-  );
-
   const callRefetch = async () => {
     try {
       const { data } = await refetchCampaignData();
@@ -151,7 +141,6 @@ const InfluencerTracker = ({
       }
       const allCreators = await refetchCreators();
 
-      console.log(allCreators);
       const creators = await refetchCreatorData();
       if (creators.data.data) {
         setCreatorsConnected(creators.data.data);
