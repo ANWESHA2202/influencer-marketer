@@ -59,6 +59,7 @@ const creatordata: CampaignInfluencer[] = [
 interface CampaignCreatorTableProps {
   creatorsConnected: CampaignInfluencer[];
   onCreatorSelected?: (i: CampaignInfluencer) => void;
+  onPaymentInitiated?: () => void;
   loading?: boolean;
 }
 
@@ -66,6 +67,7 @@ const CampaignInfluencerTable: React.FC<CampaignCreatorTableProps> = ({
   creatorsConnected,
   onCreatorSelected,
   loading,
+  onPaymentInitiated,
 }) => {
   const columns: TableColumn[] = useMemo(
     () => [
@@ -169,7 +171,11 @@ const CampaignInfluencerTable: React.FC<CampaignCreatorTableProps> = ({
         field: "payment_status",
         flex: 1,
         cellRenderer: (params: any) => {
-          return <Button variant="contained">Pay</Button>;
+          return (
+            <Button variant="contained" onClick={onPaymentInitiated}>
+              Pay
+            </Button>
+          );
         },
       },
     ],
