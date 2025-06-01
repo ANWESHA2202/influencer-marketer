@@ -124,7 +124,7 @@ const CampaignInfluencerTable: React.FC<CampaignCreatorTableProps> = ({
     () => [
       {
         headerName: "Creator",
-        field: "creator_id",
+        field: "full_name",
         flex: 1,
         cellRenderer: (params: any) => {
           return <>{params.value}</>;
@@ -132,7 +132,7 @@ const CampaignInfluencerTable: React.FC<CampaignCreatorTableProps> = ({
       },
       {
         headerName: "AI Match",
-        field: "aiMatch",
+        field: "match_score",
         flex: 1,
         cellRenderer: (params: any) => {
           const rate = params.value;
@@ -169,7 +169,7 @@ const CampaignInfluencerTable: React.FC<CampaignCreatorTableProps> = ({
         flex: 1,
         cellRenderer: (params: any) => {
           const value = parseFloat(params.value);
-          return <>{value}</>;
+          return <>{value ? value : ""}</>;
         },
       },
       {
@@ -212,7 +212,12 @@ const CampaignInfluencerTable: React.FC<CampaignCreatorTableProps> = ({
         field: "contract_status",
         flex: 1,
         cellRenderer: (params: any) => {
-          return <Button variant="text">Send</Button>;
+          console.log(params);
+          return !["cancelled", "declined"]?.includes(params.data.status) ? (
+            <Button variant="text">Send</Button>
+          ) : (
+            <></>
+          );
         },
       },
 
@@ -238,10 +243,12 @@ const CampaignInfluencerTable: React.FC<CampaignCreatorTableProps> = ({
         field: "payment_status",
         flex: 1,
         cellRenderer: (params: any) => {
-          return (
+          return params.data.status === "accepted" ? (
             <Button variant="contained" onClick={onPaymentInitiated}>
               Pay
             </Button>
+          ) : (
+            <></>
           );
         },
       },
