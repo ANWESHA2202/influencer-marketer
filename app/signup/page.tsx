@@ -66,7 +66,6 @@ export default function SignupPage() {
     e.preventDefault();
     try {
       setSaving(true);
-      await createUserWithEmailAndPassword(auth, email, password);
       setIsUserDataProcess(true);
     } catch (err: any) {
       setError(err.message);
@@ -78,6 +77,7 @@ export default function SignupPage() {
   const handleBrandDataSubmit = async (data: any) => {
     try {
       const { fullName, companyName, role, userType } = data;
+      await createUserWithEmailAndPassword(auth, email, password);
       const username = generateUsername(email);
       createUser({
         email: email,

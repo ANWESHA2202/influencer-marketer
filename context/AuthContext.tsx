@@ -40,21 +40,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setLoading(false);
       console.log(user);
 
-      // Redirect unauthenticated users from protected routes
-      if (!user && !isPublicRoute && !loading) {
+      if (!user && !isPublicRoute) {
+        // Unauthenticated user trying to access protected route
         router.push("/login");
+      }
+
+      if (user && isPublicRoute) {
+        // Authenticated user on public route → redirect to dashboard
+        router.push("/dashboard");
       }
     });
 
     return () => unsubscribe();
-  }, [pathname, router, isPublicRoute, loading]);
-
-  // Redirect unauthenticated users when they try to access protected routes
-  useEffect(() => {
-    if (!loading && !user && !isPublicRoute) {
-      router.push("/login");
-    }
-  }, [user, loading, isPublicRoute, router]);
+  }, [pathname, router, isPublicRoute]);
 
   const logout = () => {
     signOut(auth).then(() => {
