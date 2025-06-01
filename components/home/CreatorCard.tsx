@@ -131,7 +131,10 @@ const CreatorCard: React.FC<CreatorCardProps> = ({ creator, onClick }) => {
         <Chip
           label={creator.category}
           size="small"
-          className="bg-white/90 font-semibold text-xs"
+          className="bg-black/50 font-semibold text-xs"
+          sx={{
+            color: "white",
+          }}
         />
       </div>
 
