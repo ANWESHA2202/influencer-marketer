@@ -9,6 +9,8 @@ import DataTable, {
   BadgeRenderer,
   NumberRenderer,
 } from "../common/DataTable";
+import Link from "next/link";
+import { useTheme } from "@mui/material/styles";
 
 // Campaign interface based on the provided data structure
 interface Campaign {
@@ -38,6 +40,7 @@ const CampaignTable: React.FC<CampaignTableProps> = ({
   onCampaignSelect,
   loading = false,
 }) => {
+  const theme = useTheme();
   // Column definitions using the reusable table structure
   const columns: TableColumn<Campaign>[] = useMemo(
     () => [
@@ -49,8 +52,16 @@ const CampaignTable: React.FC<CampaignTableProps> = ({
         flex: 1,
         minWidth: 180,
         maxWidth: 280,
-        cellRenderer: (params: any) =>
-          TextRenderer(params, { fontWeight: 500 }),
+        cellRenderer: (params: any) => {
+          return (
+            <Link href={`/campaigns?campaignId=${params.data.id}`}>
+              {TextRenderer(params, {
+                fontWeight: 500,
+                color: theme.palette.info.main,
+              })}
+            </Link>
+          );
+        },
       },
       {
         headerName: "Description",
@@ -130,7 +141,6 @@ const CampaignTable: React.FC<CampaignTableProps> = ({
     <DataTable<Campaign>
       data={campaigns}
       columns={columns}
-      onRowSelect={onCampaignSelect}
       loading={loading}
       height="650px"
       pagination={true}

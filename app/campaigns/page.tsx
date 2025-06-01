@@ -1,8 +1,7 @@
 "use client";
 import CampaignsComponent from "@/components/campaigns";
-import CampaignInfluencerTable from "@/components/campaigns/CampaignInfluencerTable";
 import InfluencerTracker from "@/components/campaigns/InfluencerTracker";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 
 const CampaignsPage = () => {
