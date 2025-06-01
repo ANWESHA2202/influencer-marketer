@@ -24,6 +24,7 @@ const creatordata: CampaignInfluencer[] = [
     completed_at: "2025-06-02T14:00:00.000Z",
     deliverables_completed: 1,
     summary: "Agent chat summary Note",
+    aiMatch: 81,
   },
   {
     campaign_id: 1,
@@ -39,6 +40,7 @@ const creatordata: CampaignInfluencer[] = [
     completed_at: "2025-06-03T16:00:00.000Z",
     deliverables_completed: 3,
     summary: "Agent Summary Note",
+    aiMatch: 61,
   },
 ];
 

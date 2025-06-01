@@ -17,6 +17,7 @@ export interface CampaignInfluencer {
   completed_at: string;
   id: number;
   summary: string;
+  aiMatch: number;
 }
 
 const creatordata: CampaignInfluencer[] = [
@@ -34,6 +35,7 @@ const creatordata: CampaignInfluencer[] = [
     completed_at: "2025-06-02T14:00:00.000Z",
     deliverables_completed: 1,
     summary: "Agent chat summary Note",
+    aiMatch: 70,
   },
   {
     campaign_id: 1,
@@ -49,6 +51,7 @@ const creatordata: CampaignInfluencer[] = [
     completed_at: "2025-06-03T16:00:00.000Z",
     deliverables_completed: 3,
     summary: "Agent Summary Note",
+    aiMatch: 80,
   },
 ];
 
@@ -76,43 +79,44 @@ const CampaignInfluencerTable: React.FC<CampaignCreatorTableProps> = ({
       },
       {
         headerName: "AI Match",
-        field: "negotiated_rate",
+        field: "aiMatch",
         flex: 1,
         cellRenderer: (params: any) => {
           const rate = params.value;
-          const level = rate > 800 ? "High" : "Medium";
+          const level = rate > 80 ? "High" : "Medium";
           const color = level === "High" ? "#3b82f6" : "#60a5fa";
           return (
-            <span style={{ color: color, fontWeight: "500" }}>🔥 {level}</span>
+            <span style={{ color: color, fontWeight: "500" }}>🔥 {rate} %</span>
           );
         },
       },
       {
-        headerName: "Est. Cost",
+        headerName: "Offered Rate",
         field: "offered_rate",
         flex: 1,
       },
       {
-        headerName: "Est. Views",
+        headerName: "Negotiated Rate",
+        field: "negotiated_rate",
+        flex: 1,
+      },
+      {
+        headerName: "Total Deliverables",
         field: "deliverables_total",
         flex: 1,
       },
       {
-        headerName: "Followers",
+        headerName: "Completed",
         field: "deliverables_completed",
         flex: 1,
       },
       {
-        headerName: "Engagement",
+        headerName: "Final Rate",
         field: "final_rate",
         flex: 1,
         cellRenderer: (params: any) => {
           const value = parseFloat(params.value);
-          let emoji = "💚";
-          if (value > 1000) emoji = "💚";
-          else if (value > 500) emoji = "💛";
-          else emoji = "❤️";
-          return `${emoji} ${value.toFixed(0)}`;
+          return <>{value}</>;
         },
       },
       {
