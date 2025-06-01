@@ -155,15 +155,8 @@ export function useCreate<TData = any, TVariables = any>(
       }
     },
     // Add retry logic for transient errors
-    retry: (failureCount, error: any) => {
-      // Don't retry on 4xx errors (client errors)
-      if (error?.status >= 400 && error?.status < 500) {
-        return false;
-      }
-      // Retry once for 5xx errors or network errors
-      return failureCount < 1;
-    },
-    retryDelay: 1000,
+    retry: false,
+    retryDelay: 0,
     ...mutationOptions,
   });
 

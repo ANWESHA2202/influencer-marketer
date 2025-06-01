@@ -86,15 +86,8 @@ export function useFetchData<T = any>(
     enabled,
     select,
     // Add retry configuration to handle transient errors gracefully
-    retry: (failureCount, error: any) => {
-      // Don't retry on 4xx errors (client errors)
-      if (error?.status >= 400 && error?.status < 500) {
-        return false;
-      }
-      // Retry up to 2 times for other errors
-      return failureCount < 2;
-    },
-    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+    retry: false,
+    retryDelay: 0,
     // Prevent background refetching on window focus for failed queries
     refetchOnWindowFocus: false,
     ...queryOptions,

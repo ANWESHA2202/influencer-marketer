@@ -13,6 +13,8 @@ import {
   FormControlLabel,
   Collapse,
   Slider,
+  Button,
+  IconButton,
 } from "@mui/material";
 import {
   Category as CategoryIcon,
@@ -23,6 +25,7 @@ import {
   Psychology as AIIcon,
   Cake as AgeIcon,
   Person as GenderIcon,
+  Refresh as RefreshIcon,
 } from "@mui/icons-material";
 import { categories, locations, genders } from "./utils";
 
@@ -33,35 +36,45 @@ interface SearchFiltersProps {
 // Custom styling for compact input fields
 const compactInputSx = {
   "& .MuiInputBase-root": {
-    paddingTop: "8px",
-    paddingBottom: "8px",
+    paddingTop: "4px",
+    paddingBottom: "4px",
+    minHeight: "40px",
+    fontSize: "14px",
   },
   "& .MuiInputBase-input": {
-    paddingTop: "8px",
-    paddingBottom: "8px",
+    paddingTop: "6px",
+    paddingBottom: "6px",
+    fontSize: "14px",
+  },
+  "& .MuiInputLabel-root": {
+    fontSize: "14px",
+    transform: "translate(14px, 12px) scale(1)",
+    "&.MuiInputLabel-shrink": {
+      transform: "translate(14px, -9px) scale(0.75)",
+    },
+  },
+  "& .MuiAutocomplete-inputRoot": {
+    paddingTop: "4px !important",
+    paddingBottom: "4px !important",
   },
 };
 
 const SearchFilters: React.FC<SearchFiltersProps> = ({ onFiltersChange }) => {
-  // Local state for immediate UI updates
-  const [localFilters, setLocalFilters] = useState({
+  // Default filter state
+  const defaultFilters = {
     category: null,
     min_followers: "",
     location: null,
     min_engagement_rate: "",
     age_range: [18, 65],
     gender: null,
-  });
+  };
+
+  // Local state for immediate UI updates
+  const [localFilters, setLocalFilters] = useState(defaultFilters);
 
   // State for committed filters (sent to parent)
-  const [committedFilters, setCommittedFilters] = useState({
-    category: null,
-    min_followers: "",
-    location: null,
-    min_engagement_rate: "",
-    age_range: [18, 65],
-    gender: null,
-  });
+  const [committedFilters, setCommittedFilters] = useState(defaultFilters);
 
   // AI Prompt state
   const [isAIEnabled, setIsAIEnabled] = useState(true);
@@ -119,8 +132,15 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({ onFiltersChange }) => {
     onFiltersChange?.(committedFilters, aiSearchPrompt);
   };
 
+  const handleResetFilters = () => {
+    setLocalFilters(defaultFilters);
+    setCommittedFilters(defaultFilters);
+    setAISearchPrompt("");
+    onFiltersChange?.(defaultFilters, "");
+  };
+
   return (
-    <Paper elevation={2} sx={{ p: 3, mb: 3 }}>
+    <Paper elevation={2} sx={{ p: 0, mb: 3 }}>
       <Box
         sx={{
           display: "flex",
@@ -130,54 +150,126 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({ onFiltersChange }) => {
         }}
       >
         <Typography variant="h6">Filter Creators</Typography>
-        <FormControlLabel
-          control={
-            <Switch
-              checked={isAIEnabled}
-              onChange={handleAIToggle}
-              color="primary"
-            />
-          }
-          label={
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <AIIcon color={isAIEnabled ? "primary" : "action"} />
-              <Typography variant="body2">AI Prompt</Typography>
-            </Box>
-          }
-        />
+        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+          <Button
+            variant="outlined"
+            size="small"
+            startIcon={<RefreshIcon />}
+            onClick={handleResetFilters}
+            sx={{
+              textTransform: "none",
+              borderColor: "action.disabled",
+              color: "text.secondary",
+              "&:hover": {
+                borderColor: "action.hover",
+                backgroundColor: "action.hover",
+              },
+            }}
+          >
+            Reset All
+          </Button>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={isAIEnabled}
+                onChange={handleAIToggle}
+                color="primary"
+              />
+            }
+            label={
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <AIIcon color={isAIEnabled ? "primary" : "action"} />
+                <Typography variant="body2">AI Prompt</Typography>
+              </Box>
+            }
+          />
+        </Box>
       </Box>
 
       <Collapse in={isAIEnabled}>
-        <Box sx={{ mb: 3 }}>
-          <TextField
-            fullWidth
-            label="AI Prompt"
-            placeholder="Describe the type of creator you're looking for..."
-            value={aiSearchPrompt}
-            onChange={(e) => handleAISearchChange(e.target.value)}
-            onBlur={handleAISearchBlur}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                handleAISearchBlur();
-              }
-            }}
-            sx={{
-              ...compactInputSx,
-              "& .MuiInputBase-root": {
-                ...compactInputSx["& .MuiInputBase-root"],
-                backgroundColor: "rgba(25, 118, 210, 0.04)",
+        <TextField
+          fullWidth
+          label=" AI-Powered Creator Search"
+          placeholder="Describe the type of creator you're looking for..."
+          value={aiSearchPrompt}
+          onChange={(e) => handleAISearchChange(e.target.value)}
+          onBlur={handleAISearchBlur}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleAISearchBlur();
+            }
+          }}
+          multiline
+          rows={3}
+          sx={{
+            "& .MuiInputBase-root": {
+              backgroundColor: "rgba(25, 118, 210, 0.08)",
+              border: "1px solid rgba(25, 118, 210, 0.1)",
+              borderRadius: "12px",
+              fontSize: "16px",
+              fontWeight: 500,
+              "&:hover": {
+                backgroundColor: "rgba(25, 118, 210, 0.12)",
+                borderColor: "transparent",
               },
-            }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon color="primary" />
-                </InputAdornment>
-              ),
-            }}
-          />
-        </Box>
+              "&.Mui-focused": {
+                backgroundColor: "rgba(25, 118, 210, 0.1)",
+                borderColor: "transparent",
+                boxShadow: "0 0 0 3px rgba(25, 118, 210, 0.1)",
+              },
+            },
+            "& .MuiInputLabel-root": {
+              fontWeight: 600,
+              fontSize: "16px",
+              color: "primary.main",
+              "&.Mui-focused": {
+                color: "primary.main",
+              },
+            },
+            "& .MuiInputBase-input": {
+              fontSize: "16px",
+              lineHeight: 1.5,
+            },
+            "& .MuiInputBase-input::placeholder": {
+              fontSize: "15px",
+              fontStyle: "italic",
+            },
+          }}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment
+                position="start"
+                sx={{ alignSelf: "flex-start", mt: 1 }}
+              >
+                <SearchIcon color="primary" sx={{ fontSize: 24 }} />
+              </InputAdornment>
+            ),
+          }}
+        />
       </Collapse>
+
+      {/* Divider between AI and regular filters */}
+      {isAIEnabled && (
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 2,
+            mb: 3,
+            opacity: 0.6,
+          }}
+        >
+          <Box sx={{ flex: 1, height: "1px", backgroundColor: "divider" }} />
+          <Typography
+            variant="caption"
+            color="text.secondary"
+            sx={{ fontWeight: 500 }}
+          >
+            CAN USE TRADITIONAL FILTERS TOO
+          </Typography>
+          <Box sx={{ flex: 1, height: "1px", backgroundColor: "divider" }} />
+        </Box>
+      )}
 
       <Grid container spacing={3}>
         {/* Category Filter */}

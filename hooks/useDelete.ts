@@ -165,15 +165,8 @@ export function useDelete<TData = any, TVariables = any>(
       }
     },
     // Add retry logic for transient errors
-    retry: (failureCount, error: any) => {
-      // Don't retry on 4xx errors (client errors) - especially important for DELETE
-      if (error?.status >= 400 && error?.status < 500) {
-        return false;
-      }
-      // Only retry once for 5xx errors or network errors for DELETE operations
-      return failureCount < 1;
-    },
-    retryDelay: 1000,
+    retry: false,
+    retryDelay: 0,
     ...mutationOptions,
   });
 
