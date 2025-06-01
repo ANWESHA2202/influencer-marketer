@@ -37,8 +37,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
+      console.log("user", user);
       setLoading(false);
-      console.log(user);
+      if (user?.accessToken) {
+        // localStorage.setItem("token", user?.accessToken);
+      }
 
       // Redirect unauthenticated users from protected routes
       if (!user && !isPublicRoute && !loading) {
@@ -59,6 +62,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = () => {
     signOut(auth).then(() => {
       router.push("/");
+      // localStorage.removeItem("token");
     });
   };
 

@@ -6,6 +6,9 @@ import CampaignForm from "./CampaignForm";
 import CampaignTable from "./CampaignTable";
 import EmptyView from "../common/EmptyView";
 import { useRouter } from "next/navigation";
+import { URLMapping } from "@/lib/constants";
+import { axiosWithAuth } from "@/lib/axios";
+import useCreate from "@/hooks/useCreate";
 
 interface CampaignFormData {
   title: string;
@@ -15,9 +18,15 @@ interface CampaignFormData {
   budget: number | "";
   start_date: string;
   end_date: string;
-  target_audience: Record<string, any>;
-  content_requirements: Record<string, any>;
-  deliverables: Record<string, any>;
+  target_audience: {
+    value: string;
+  };
+  content_requirements: {
+    value: string;
+  };
+  deliverables: {
+    value: string;
+  };
 }
 
 interface Campaign {
@@ -28,9 +37,9 @@ interface Campaign {
   budget: number;
   start_date: string;
   end_date: string;
-  target_audience: Record<string, any>;
-  content_requirements: Record<string, any>;
-  deliverables: Record<string, any>;
+  target_audience: string;
+  content_requirements: string;
+  deliverables: string;
   status: "draft" | "active" | "paused" | "completed" | "cancelled";
   created_at: string;
   influencers_reached: number;
@@ -53,9 +62,9 @@ const CampaignsComponent = ({
       budget: 15000,
       start_date: "2025-06-01T00:00:00.000Z",
       end_date: "2025-07-31T23:59:59.000Z",
-      target_audience: { age: "18-35", interests: ["fashion", "lifestyle"] },
-      content_requirements: { posts: 3, stories: 5, reels: 2 },
-      deliverables: { reach: 100000, engagement: 5000 },
+      target_audience: "18-35",
+      content_requirements: "3 posts, 5 stories, 2 reels",
+      deliverables: "100000 reach, 5000 engagement",
       status: "active",
       created_at: "2025-05-15T10:30:00.000Z",
       influencers_reached: 12,
@@ -68,9 +77,9 @@ const CampaignsComponent = ({
       budget: 25000,
       start_date: "2025-06-15T00:00:00.000Z",
       end_date: "2025-08-15T23:59:59.000Z",
-      target_audience: { age: "25-45", interests: ["technology", "gadgets"] },
-      content_requirements: { reviews: 2, unboxing: 1, tutorials: 1 },
-      deliverables: { reach: 200000, engagement: 10000 },
+      target_audience: "25-45",
+      content_requirements: "2 reviews, 1 unboxing, 1 tutorial",
+      deliverables: "200000 reach, 10000 engagement",
       status: "draft",
       created_at: "2025-05-20T14:15:00.000Z",
       influencers_reached: 7,
@@ -84,9 +93,9 @@ const CampaignsComponent = ({
       budget: 8000,
       start_date: "2025-07-01T00:00:00.000Z",
       end_date: "2025-07-31T23:59:59.000Z",
-      target_audience: { age: "20-40", interests: ["fitness", "health"] },
-      content_requirements: { daily_posts: 30, workout_videos: 10 },
-      deliverables: { reach: 75000, engagement: 7500 },
+      target_audience: "20-40",
+      content_requirements: "30 daily posts, 10 workout videos",
+      deliverables: "75000 reach, 7500 engagement",
       status: "paused",
       created_at: "2025-05-10T09:45:00.000Z",
       influencers_reached: 15,
@@ -99,9 +108,9 @@ const CampaignsComponent = ({
       budget: 12000,
       start_date: "2024-11-01T00:00:00.000Z",
       end_date: "2024-12-31T23:59:59.000Z",
-      target_audience: { age: "25-50", interests: ["shopping", "gifts"] },
-      content_requirements: { gift_guides: 5, reviews: 10 },
-      deliverables: { reach: 150000, engagement: 8000 },
+      target_audience: "25-50",
+      content_requirements: "5 gift guides, 10 reviews",
+      deliverables: "150000 reach, 8000 engagement",
       status: "completed",
       created_at: "2024-10-15T16:20:00.000Z",
       influencers_reached: 20,
@@ -109,26 +118,23 @@ const CampaignsComponent = ({
   ]);
   const router = useRouter();
 
+  const {
+    create: createCampaign,
+    isPending: createCampaignLoading,
+    isSuccess: createCampaignSuccess,
+    error: createCampaignError,
+  } = useCreate(axiosWithAuth, URLMapping["campaigns"], "withHeaders", {
+    onSuccess: (data) => {
+      alert("Campaign created successfully!");
+    },
+    onError: (error) => {
+      console.error("Failed to create User:", error);
+    },
+  });
+
   const handleCreateCampaign = (data: CampaignFormData) => {
     console.log("Campaign data:", data);
-
-    // Create new campaign with generated ID and additional fields
-    const newCampaign: Campaign = {
-      id: Date.now().toString(),
-      ...data,
-      budget:
-        typeof data.budget === "string"
-          ? Number(data.budget) || 0
-          : data.budget,
-      status: "draft",
-      created_at: new Date().toISOString(),
-      influencers_reached: 0,
-    };
-
-    // Add to campaigns list
-    setCampaigns((prev) => [newCampaign, ...prev]);
-
-    alert("Campaign created successfully!");
+    createCampaign(data);
   };
 
   const handleCampaignSelect = (campaign: Campaign) => {

@@ -27,8 +27,7 @@ import {
 import { categories, locations, genders } from "./utils";
 
 interface SearchFiltersProps {
-  onFiltersChange?: (filters: any) => void;
-  onAISearchChange?: (searchPrompt: string, isAIEnabled: boolean) => void;
+  onFiltersChange?: (filters: any, searchQuery: string) => void;
 }
 
 // Custom styling for compact input fields
@@ -43,10 +42,7 @@ const compactInputSx = {
   },
 };
 
-const SearchFilters: React.FC<SearchFiltersProps> = ({
-  onFiltersChange,
-  onAISearchChange,
-}) => {
+const SearchFilters: React.FC<SearchFiltersProps> = ({ onFiltersChange }) => {
   // Local state for immediate UI updates
   const [localFilters, setLocalFilters] = useState({
     category: null,
@@ -67,7 +63,7 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({
     gender: null,
   });
 
-  // AI search state
+  // AI Prompt state
   const [isAIEnabled, setIsAIEnabled] = useState(true);
   const [aiSearchPrompt, setAISearchPrompt] = useState("");
 
@@ -78,7 +74,7 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({
   const handleTextFieldBlur = (field: string, value: string) => {
     const newCommittedFilters = { ...committedFilters, [field]: value };
     setCommittedFilters(newCommittedFilters);
-    onFiltersChange?.(newCommittedFilters);
+    onFiltersChange?.(newCommittedFilters, aiSearchPrompt);
   };
 
   const handleDropdownChange = (field: string, value: any) => {
@@ -86,7 +82,7 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({
     setLocalFilters(newFilters);
     const newCommittedFilters = { ...committedFilters, [field]: value };
     setCommittedFilters(newCommittedFilters);
-    onFiltersChange?.(newCommittedFilters);
+    onFiltersChange?.(newCommittedFilters, aiSearchPrompt);
   };
 
   const handleAgeRangeChange = (event: Event, newValue: number | number[]) => {
@@ -101,7 +97,7 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({
     const ageRange = newValue as number[];
     const newCommittedFilters = { ...committedFilters, age_range: ageRange };
     setCommittedFilters(newCommittedFilters);
-    onFiltersChange?.(newCommittedFilters);
+    onFiltersChange?.(newCommittedFilters, aiSearchPrompt);
   };
 
   const handleAIToggle = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -109,9 +105,9 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({
     setIsAIEnabled(enabled);
     if (!enabled) {
       setAISearchPrompt("");
-      onAISearchChange?.("", false);
+      onFiltersChange?.("", "");
     } else {
-      onAISearchChange?.(aiSearchPrompt, true);
+      onFiltersChange?.(committedFilters, aiSearchPrompt);
     }
   };
 
@@ -120,7 +116,7 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({
   };
 
   const handleAISearchBlur = () => {
-    onAISearchChange?.(aiSearchPrompt, isAIEnabled);
+    onFiltersChange?.(committedFilters, aiSearchPrompt);
   };
 
   return (
@@ -145,7 +141,7 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({
           label={
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
               <AIIcon color={isAIEnabled ? "primary" : "action"} />
-              <Typography variant="body2">AI Search</Typography>
+              <Typography variant="body2">AI Prompt</Typography>
             </Box>
           }
         />
@@ -155,11 +151,16 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({
         <Box sx={{ mb: 3 }}>
           <TextField
             fullWidth
-            label="AI Search"
+            label="AI Prompt"
             placeholder="Describe the type of creator you're looking for..."
             value={aiSearchPrompt}
             onChange={(e) => handleAISearchChange(e.target.value)}
             onBlur={handleAISearchBlur}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleAISearchBlur();
+              }
+            }}
             sx={{
               ...compactInputSx,
               "& .MuiInputBase-root": {
@@ -187,7 +188,6 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({
             onChange={(_, newValue) =>
               handleDropdownChange("category", newValue)
             }
-            disabled={isAIEnabled}
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -218,8 +218,17 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({
             onChange={(e) =>
               handleTextFieldChange("min_followers", e.target.value)
             }
-            onBlur={(e) => handleTextFieldBlur("min_followers", e.target.value)}
-            disabled={isAIEnabled}
+            onBlur={(e) =>
+              handleTextFieldBlur("min_followers", localFilters.min_followers)
+            }
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleTextFieldBlur(
+                  "min_followers",
+                  localFilters.min_followers
+                );
+              }
+            }}
             sx={compactInputSx}
             InputProps={{
               startAdornment: (
@@ -239,7 +248,6 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({
             onChange={(_, newValue) =>
               handleDropdownChange("location", newValue)
             }
-            disabled={isAIEnabled}
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -271,9 +279,19 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({
               handleTextFieldChange("min_engagement_rate", e.target.value)
             }
             onBlur={(e) =>
-              handleTextFieldBlur("min_engagement_rate", e.target.value)
+              handleTextFieldBlur(
+                "min_engagement_rate",
+                localFilters.min_engagement_rate
+              )
             }
-            disabled={isAIEnabled}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleTextFieldBlur(
+                  "min_engagement_rate",
+                  localFilters.min_engagement_rate
+                );
+              }
+            }}
             sx={compactInputSx}
             InputProps={{
               startAdornment: (
@@ -303,7 +321,6 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({
               valueLabelDisplay="auto"
               min={13}
               max={80}
-              disabled={isAIEnabled}
               sx={{
                 color: isAIEnabled ? "action.disabled" : "primary.main",
               }}
@@ -317,7 +334,6 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({
             options={genders}
             value={localFilters.gender}
             onChange={(_, newValue) => handleDropdownChange("gender", newValue)}
-            disabled={isAIEnabled}
             renderInput={(params) => (
               <TextField
                 {...params}

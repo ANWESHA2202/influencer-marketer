@@ -39,7 +39,13 @@ export function useFetchData<T = any>(
         console.log(`🚀 Starting API call: ${url}`);
 
         const config =
-          headerType === "withoutHeaders" ? { headers: {} } : undefined;
+          headerType === "withoutHeaders"
+            ? { headers: {} }
+            : {
+                headers: {
+                  Authorization: `bearer ${localStorage.getItem("token")}`,
+                },
+              };
 
         const response = await axiosInstance.get<T>(url, config);
 

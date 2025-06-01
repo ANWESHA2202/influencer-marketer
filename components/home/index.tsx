@@ -1,38 +1,42 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import CreatorLists from "./CreatorLists";
 import SearchFilters from "./SearchFilters";
-import { useAuth } from "@/context/AuthContext";
-import LandingPage from "./LandingPage";
 
 const HomeComponent = () => {
-  const { user } = useAuth();
+  const [searchParams, setSearchParams] = useState<string>("");
 
-  const handleFiltersChange = (filters: any) => {
-    // This will be implemented later when we add actual filtering logic
-    console.log("Filters changed:", filters);
-  };
+  const handleFiltersChange = (filters: any, searchQuery: string) => {
+    // Build query string properly
+    const queryParams = new URLSearchParams();
 
-  const handleAISearchChange = (searchPrompt: string, isAIEnabled: boolean) => {
-    // This will be implemented later when we add AI search functionality
-    console.log("AI Search:", { searchPrompt, isAIEnabled });
+    if (filters.query) queryParams?.append("query", filters.query);
+    if (filters.category) queryParams?.append("category", filters.category);
+    if (filters.min_followers)
+      queryParams?.append("min_followers", filters.min_followers);
+    if (filters.max_followers)
+      queryParams.append("max_followers", filters.max_followers);
+    if (filters.location) queryParams.append("location", filters.location);
+    if (filters.min_engagement_rate)
+      queryParams.append("min_engagement_rate", filters.min_engagement_rate);
+    if (filters.max_rate) queryParams.append("max_rate", filters.max_rate);
+    queryParams.append("query", searchQuery || " ");
+
+    // Always add limit
+    queryParams.append("limit", "20");
+
+    const queryString = queryParams.toString();
+    setSearchParams(queryString);
+
+    console.log("Search params:", queryString);
   };
 
   return (
     <>
-      {user ? (
-        <div>
-          <SearchFilters
-            onFiltersChange={handleFiltersChange}
-            onAISearchChange={handleAISearchChange}
-          />
-          <CreatorLists />
-        </div>
-      ) : (
-        <div>
-          <LandingPage />
-        </div>
-      )}
+      <div>
+        <SearchFilters onFiltersChange={handleFiltersChange} />
+        <CreatorLists searchParams={searchParams} />
+      </div>
     </>
   );
 };
