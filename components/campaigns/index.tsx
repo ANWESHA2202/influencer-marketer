@@ -5,6 +5,7 @@ import AddIcon from "@mui/icons-material/Add";
 import CampaignForm from "./CampaignForm";
 import CampaignTable from "./CampaignTable";
 import EmptyView from "../common/EmptyView";
+import { useRouter } from "next/navigation";
 
 interface CampaignFormData {
   title: string;
@@ -102,6 +103,7 @@ const CampaignsComponent = () => {
       influencers_reached: 20,
     },
   ]);
+  const router = useRouter();
 
   const handleCreateCampaign = (data: CampaignFormData) => {
     console.log("Campaign data:", data);
@@ -126,6 +128,8 @@ const CampaignsComponent = () => {
   };
 
   const handleCampaignSelect = (campaign: Campaign) => {
+    const { id } = campaign;
+    router.push(`/campaigns?campaignId=${id}`);
     console.log("Selected campaign:", campaign);
     // You can add logic here to handle campaign selection
     // For example, open a detail view or edit form
