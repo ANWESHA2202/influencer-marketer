@@ -40,7 +40,7 @@ export default function SignupPage() {
     error: createError,
   } = useCreate(axiosWithAuth, URLMapping["register"], "withoutHeaders", {
     onSuccess: (data) => {
-      router.push("/");
+      router.push("/dashboard");
     },
     onError: (error) => {
       console.error("Failed to create User:", error);

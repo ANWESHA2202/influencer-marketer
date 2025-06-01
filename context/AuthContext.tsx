@@ -72,7 +72,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <AuthContext.Provider value={{ user, loading, logout }}>
-      {user ? <AuthenticatedLayout>{children}</AuthenticatedLayout> : children}
+      {user && !isPublicRoute ? (
+        <AuthenticatedLayout>{children}</AuthenticatedLayout>
+      ) : (
+        children
+      )}
     </AuthContext.Provider>
   );
 };
