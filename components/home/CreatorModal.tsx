@@ -68,7 +68,6 @@ const CreatorModal: React.FC<CreatorModalProps> = ({
   } = useFetchData(axiosWithAuth, URLMapping["campaigns"], "withHeaders", {
     enabled: false,
     select: (data) => {
-      console.log(data, "campaign data");
       return data?.data || [];
     },
     onError: (error) => {

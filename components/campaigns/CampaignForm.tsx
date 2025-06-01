@@ -87,7 +87,6 @@ const CampaignForm: React.FC<CampaignFormProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("formData", formData);
     // Parse JSON fields
     try {
       const finalData = {

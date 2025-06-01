@@ -93,7 +93,7 @@ export default function SignupPage() {
         phone_number: "9896316134",
       });
     } catch (e) {
-      console.log("Error in Registering User", e);
+      console.error("Error in Registering User", e);
     }
   };
 

@@ -1,10 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CreatorLists from "./CreatorLists";
 import SearchFilters from "./SearchFilters";
 
 const HomeComponent = () => {
   const [searchParams, setSearchParams] = useState<string>("");
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   const handleFiltersChange = (filters: any, searchQuery: string) => {
     // Build query string properly
@@ -27,9 +28,12 @@ const HomeComponent = () => {
 
     const queryString = queryParams.toString();
     setSearchParams(queryString);
-
-    console.log("Search params:", queryString);
   };
+
+  useEffect(() => {
+    const queryString = searchParams.toString();
+    setSearchQuery(queryString);
+  }, [searchParams]);
 
   return (
     <>
