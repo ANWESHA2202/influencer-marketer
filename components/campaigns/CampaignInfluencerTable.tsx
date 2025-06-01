@@ -147,11 +147,17 @@ const CampaignInfluencerTable: React.FC<CampaignCreatorTableProps> = ({
         headerName: "Offered Rate",
         field: "offered_rate",
         flex: 1,
+        cellRenderer: (params) => {
+          return <>₹ {params.value}</>;
+        },
       },
       {
         headerName: "Negotiated Rate",
         field: "negotiated_rate",
         flex: 1,
+        cellRenderer: (params) => {
+          return <>₹ {params.value}</>;
+        },
       },
       {
         headerName: "Total Deliverables",
@@ -169,7 +175,7 @@ const CampaignInfluencerTable: React.FC<CampaignCreatorTableProps> = ({
         flex: 1,
         cellRenderer: (params: any) => {
           const value = parseFloat(params.value);
-          return <>{value ? value : ""}</>;
+          return <>₹ {value ? value : ""}</>;
         },
       },
       {
