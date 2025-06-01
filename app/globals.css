@@ -2,25 +2,25 @@
 
 @theme {
   /* Core brand colors - sophisticated and trustworthy */
-  --color-primary: #6366f1;
-  --color-primary-hover: #4f46e5;
-  --color-primary-pressed: #4338ca;
-  --color-primary-light: #a5b4fc;
-  --color-primary-muted: #e0e7ff;
+  --color-primary: #06b6d4;
+  --color-primary-hover: #0891b2;
+  --color-primary-pressed: #0e7490;
+  --color-primary-light: #67e8f9;
+  --color-primary-muted: #cffafe;
 
   /* Secondary brand colors - creativity and engagement */
-  --color-secondary: #ec4899;
-  --color-secondary-hover: #db2777;
-  --color-secondary-pressed: #be185d;
-  --color-secondary-light: #f9a8d4;
-  --color-secondary-muted: #fce7f3;
+  --color-secondary: #3b82f6;
+  --color-secondary-hover: #2563eb;
+  --color-secondary-pressed: #1d4ed8;
+  --color-secondary-light: #93c5fd;
+  --color-secondary-muted: #dbeafe;
 
   /* Accent colors for data and insights */
-  --color-accent: #06b6d4;
-  --color-accent-hover: #0891b2;
-  --color-accent-pressed: #0e7490;
-  --color-accent-light: #67e8f9;
-  --color-accent-muted: #cffafe;
+  --color-accent: #6366f1;
+  --color-accent-hover: #4f46e5;
+  --color-accent-pressed: #4338ca;
+  --color-accent-light: #a5b4fc;
+  --color-accent-muted: #e0e7ff;
 
   /* Status colors - professional and clear */
   --color-success: #10b981;
