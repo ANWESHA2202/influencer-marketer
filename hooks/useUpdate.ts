@@ -50,7 +50,13 @@ export function useUpdate<TData = any, TVariables = any>(
         });
 
         const config =
-          headerType === "withoutHeaders" ? { headers: {} } : undefined;
+          headerType === "withoutHeaders"
+            ? { headers: {} }
+            : {
+                headers: {
+                  Authorization: `bearer ${localStorage.getItem("token")}`,
+                },
+              };
 
         let response: AxiosResponse<TData>;
 
