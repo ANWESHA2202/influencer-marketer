@@ -155,6 +155,7 @@ const InfluencerTracker = ({
       const creators = await refetchCreatorData();
       if (creators.data.data) {
         setCreatorsConnected(creators.data.data);
+        setIsLoadingTableData(false);
       }
     } catch (e) {
       console.error("Error in fetching");
@@ -200,7 +201,7 @@ const InfluencerTracker = ({
           Compare
         </Button>
       </div>
-      {loading && !creatorDataError ? (
+      {isLoadingTableData && !creatorDataError ? (
         <TableSkeleton />
       ) : (
         <CampaignInfluencerTable
