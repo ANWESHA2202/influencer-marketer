@@ -205,7 +205,14 @@ export default function LoginPage() {
       {/* Right Panel */}
       <div className="w-1/2 bg-white h-screen overflow-y-auto">
         <div className="flex items-center justify-center min-h-full p-8">
-          <div className="w-full max-w-2xl">
+          <div
+            className="w-full max-w-2xl"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             {type === "creator" ? (
               <CreatorRegistrationForm />
             ) : (
