@@ -95,23 +95,27 @@ export default function SignupPage() {
   return (
     <div className="min-h-screen flex">
       {/* Left Panel */}
-      <div className="w-1/2 bg-blue-700 text-white flex flex-col justify-center px-16">
+      <div className="w-1/2 bg-gradient-to-br from-secondary to-primary text-white flex flex-col justify-center px-16 overflow-hidden">
         <div>
-          <div className="text-white text-xl font-semibold mb-2">● Flee</div>
+          <div className="text-white text-2xl font-bold mb-2 flex items-center">
+            Influency
+          </div>
           <h1 className="text-4xl font-bold mb-4 leading-tight">
-            Welcome Back!
+            Welcome!
             <br />
-            Let's Keep Your Business Running
+            Ready to Scale Your Brand?
           </h1>
-          <p className="mb-6 text-lg text-blue-200">
-            Manage and sell seamlessly - online, offline, and everywhere in
-            between.
+          <p className="mb-6 text-lg text-white/90">
+            Connect with authentic creators who align with your values. Build
+            meaningful partnerships that drive engagement and real results.
           </p>
-          <blockquote className="italic text-sm text-blue-300 mt-8">
-            "If you do build a great experience, customers tell each other about
-            that. Word of mouth is very powerful!!"
+          <blockquote className="italic text-sm text-white/80 mt-8">
+            "The best brand partnerships feel natural and authentic. When
+            creators genuinely love your product, their audience feels it too."
             <br />
-            <span className="block mt-2 font-bold text-white">Jeff Bezos</span>
+            <span className="block mt-2 font-bold text-white">
+              — Marketing Director, Fortune 500
+            </span>
           </blockquote>
         </div>
       </div>
