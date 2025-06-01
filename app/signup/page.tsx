@@ -11,10 +11,11 @@ import { auth } from "@/firebaseConfig";
 import { TextField, Button, Divider, useTheme } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 import { CircularProgress } from "@mui/material";
-import BrandInfoStepForm from "@/components/BrandInfo";
+import BrandInfoStepForm from "@/components/OnBoardingFlow";
 import { useCreate } from "@/hooks";
 import { URLMapping } from "@/lib/constants";
 import { axiosWithAuth } from "@/lib/axios";
+import OnBoardingFlow from "@/components/OnBoardingFlow";
 
 function generateUsername(email: string) {
   const namePart = email.split("@")[0].replace(/[^a-zA-Z0-9]/g, "");
@@ -139,7 +140,8 @@ export default function SignupPage() {
               Something went wrong
             </div>
           )}
-          <BrandInfoStepForm
+
+          <OnBoardingFlow
             handleSubmitForm={handleBrandDataSubmit}
             isSaving={createLoading}
           />

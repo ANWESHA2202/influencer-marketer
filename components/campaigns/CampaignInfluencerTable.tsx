@@ -16,6 +16,7 @@ export interface CampaignInfluencer {
   accepted_at: string;
   completed_at: string;
   id: number;
+  summary: string;
 }
 
 const creatordata: CampaignInfluencer[] = [
@@ -32,6 +33,7 @@ const creatordata: CampaignInfluencer[] = [
     accepted_at: "2025-06-01T12:00:00.000Z",
     completed_at: "2025-06-02T14:00:00.000Z",
     deliverables_completed: 1,
+    summary: "Agent chat summary Note",
   },
   {
     campaign_id: 1,
@@ -46,13 +48,21 @@ const creatordata: CampaignInfluencer[] = [
     accepted_at: "2025-06-01T14:00:00.000Z",
     completed_at: "2025-06-03T16:00:00.000Z",
     deliverables_completed: 3,
+    summary: "Agent Summary Note",
   },
 ];
 
-const CampaignInfluencerTable = ({ campaignId }: { campaignId: string }) => {
-  const [creatorsConnected, setCreatorsConnected] = useState(creatordata);
-  const [loading, setLoading] = useState(false);
+interface CampaignCreatorTableProps {
+  creatorsConnected: CampaignInfluencer[];
+  onCreatorSelected?: (i: CampaignInfluencer) => void;
+  loading?: boolean;
+}
 
+const CampaignInfluencerTable: React.FC<CampaignCreatorTableProps> = ({
+  creatorsConnected,
+  onCreatorSelected,
+  loading,
+}) => {
   const columns: TableColumn<CampaignInfluencer>[] = useMemo(
     () => [
       {
@@ -61,7 +71,7 @@ const CampaignInfluencerTable = ({ campaignId }: { campaignId: string }) => {
         flex: 1,
         cellRenderer: (params: any) => {
           console.log(params);
-          return <>dj</>;
+          return <>{params.value}</>;
         },
       },
       {
@@ -130,11 +140,18 @@ const CampaignInfluencerTable = ({ campaignId }: { campaignId: string }) => {
           );
         },
       },
+
+      {
+        headerName: "Agent Summary",
+        field: "summary",
+        flex: 1,
+        cellRenderer: (params: any) => {
+          return <></>;
+        },
+      },
     ],
     []
   );
-
-  const onCreatorSelected = () => {};
 
   return (
     <div className="ag-theme-alpine" style={{ height: 600, width: "100%" }}>
