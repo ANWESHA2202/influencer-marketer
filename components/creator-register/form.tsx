@@ -9,6 +9,8 @@ import {
   Chip,
   Autocomplete,
 } from "@mui/material";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 import {
   CATEGORIES,
   CONTENT_TYPES,
@@ -22,9 +24,10 @@ interface CreatorFormData {
   email: string;
   username: string;
   full_name: string;
+  phone_number: string;
   bio: string;
   location: string;
-  category: string[];
+  category: string;
   instagram_handle: string;
   youtube_handle: string;
   tiktok_handle: string;
@@ -62,9 +65,10 @@ export default function CreatorRegistrationForm() {
     email: "",
     username: "",
     full_name: "",
+    phone_number: "",
     bio: "",
     location: "",
-    category: [],
+    category: "",
     instagram_handle: "",
     youtube_handle: "",
     tiktok_handle: "",
@@ -103,6 +107,8 @@ export default function CreatorRegistrationForm() {
     if (!creatorForm.email) errors.email = "Email is required";
     if (!creatorForm.username) errors.username = "Username is required";
     if (!creatorForm.full_name) errors.full_name = "Full name is required";
+    if (!creatorForm.phone_number)
+      errors.phone_number = "Phone number is required";
     if (!creatorForm.bio) errors.bio = "Bio is required";
     if (!creatorForm.location) errors.location = "Location is required";
     if (!creatorForm.category) errors.category = "Category is required";
@@ -133,6 +139,11 @@ export default function CreatorRegistrationForm() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (creatorForm.email && !emailRegex.test(creatorForm.email)) {
       errors.email = "Please enter a valid email address";
+    }
+
+    // Phone validation (basic check for minimum length)
+    if (creatorForm.phone_number && creatorForm.phone_number.length < 10) {
+      errors.phone_number = "Please enter a valid phone number";
     }
 
     setFormErrors(errors);
@@ -169,6 +180,65 @@ export default function CreatorRegistrationForm() {
 
   return (
     <div className="w-full max-w-2xl flex flex-col h-full">
+      {/* Custom styles for phone input to match Material-UI */}
+      <style jsx global>{`
+        .react-tel-input {
+          font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+        }
+
+        .react-tel-input .form-control {
+          width: 100%;
+          height: 40px;
+          padding: 8px 14px 8px 58px;
+          border: 1px solid rgba(0, 0, 0, 0.23);
+          border-radius: 4px;
+          font-size: 16px;
+          font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+          background-color: transparent;
+          transition: border-color 0.15s ease-in-out;
+        }
+
+        .react-tel-input .form-control:focus {
+          border-color: #6366f1;
+          border-width: 2px;
+          outline: none;
+        }
+
+        .react-tel-input .flag-dropdown {
+          border: 1px solid rgba(0, 0, 0, 0.23);
+          border-radius: 4px 0 0 4px;
+          background-color: transparent;
+        }
+
+        .react-tel-input .flag-dropdown:hover {
+          background-color: rgba(0, 0, 0, 0.04);
+        }
+
+        .react-tel-input .flag-dropdown.open {
+          background-color: rgba(0, 0, 0, 0.04);
+        }
+
+        .react-tel-input .selected-flag {
+          padding: 0 8px;
+          height: 38px;
+        }
+
+        .react-tel-input .country-list {
+          border-radius: 4px;
+          box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2),
+            0px 8px 10px 1px rgba(0, 0, 0, 0.14),
+            0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+        }
+
+        .phone-input-error .react-tel-input .form-control {
+          border-color: #d32f2f;
+        }
+
+        .phone-input-error .react-tel-input .flag-dropdown {
+          border-color: #d32f2f;
+        }
+      `}</style>
+
       {isCreatorCreated || createSuccess ? (
         // Success Message
         <div className="flex-1 flex items-center justify-center">
@@ -281,6 +351,41 @@ export default function CreatorRegistrationForm() {
                   />
                 </div>
 
+                {/* Phone Number Field */}
+                <div className="mt-6">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Phone Number *
+                  </label>
+                  <div
+                    className={
+                      formErrors.phone_number ? "phone-input-error" : ""
+                    }
+                  >
+                    <PhoneInput
+                      country={"in"}
+                      value={creatorForm.phone_number}
+                      onChange={(phone) =>
+                        handleCreatorFormChange("phone_number", phone)
+                      }
+                      inputProps={{
+                        name: "phone_number",
+                        required: true,
+                      }}
+                      containerStyle={{
+                        width: "100%",
+                      }}
+                      inputStyle={{
+                        width: "100%",
+                      }}
+                    />
+                  </div>
+                  {formErrors.phone_number && (
+                    <p className="text-xs text-red-600 mt-1 ml-3">
+                      {formErrors.phone_number}
+                    </p>
+                  )}
+                </div>
+
                 <div className="mt-6">
                   <TextField
                     label="Bio"
@@ -324,22 +429,10 @@ export default function CreatorRegistrationForm() {
                     sx={inputSx}
                   />
                   <Autocomplete
-                    multiple
                     options={CATEGORIES}
-                    value={creatorForm.category || []}
+                    value={creatorForm.category || ""}
                     onChange={(event, newValue) =>
                       handleCreatorFormChange("category", newValue)
-                    }
-                    renderTags={(value, getTagProps) =>
-                      value.map((option, index) => (
-                        <Chip
-                          variant="outlined"
-                          label={option}
-                          size="small"
-                          {...getTagProps({ index })}
-                          key={option}
-                        />
-                      ))
                     }
                     sx={{
                       "& .MuiInputBase-root": {
