@@ -77,6 +77,7 @@ const CampaignInfluencerTable: React.FC<CampaignCreatorTableProps> = ({
   const [chatUrl, setChatUrl] = useState("");
   const [openChatDrawer, setOpenChatDrawer] = useState(false);
   const [chatData, setChatData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     data: chatDatafetched,
@@ -101,6 +102,8 @@ const CampaignInfluencerTable: React.FC<CampaignCreatorTableProps> = ({
     setChatUrl(dynamicUrl);
 
     setTimeout(async () => {
+      setIsLoading(true);
+      setOpenChatDrawer(true);
       try {
         const { data } = await fetchChat(); // ✅ Works correctly now
         if (data.data.messages) {
@@ -108,10 +111,11 @@ const CampaignInfluencerTable: React.FC<CampaignCreatorTableProps> = ({
         } else {
           setChatData([]);
         }
-        setOpenChatDrawer(true);
       } catch (error) {
         // console.error("Error fetching chat:", error);
         setChatData([]);
+      } finally {
+        setIsLoading(false);
       }
     }, 0);
   };
@@ -270,6 +274,7 @@ const CampaignInfluencerTable: React.FC<CampaignCreatorTableProps> = ({
         open={openChatDrawer}
         setOpen={setOpenChatDrawer}
         chatData={chatData}
+        isLoading={isLoading}
       />
     </div>
   );

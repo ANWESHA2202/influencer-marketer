@@ -10,8 +10,16 @@ import {
   ListItemText,
   Paper,
 } from "@mui/material";
+import ChatLoader from "./ChatLoader";
+import NoChatView from "./NoChatView";
 
-const ChatDrawer = ({ chatData, userName = "User", open, setOpen }: any) => {
+const ChatDrawer = ({
+  chatData,
+  userName = "User",
+  open,
+  setOpen,
+  isLoading,
+}: any) => {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const handleClose = () => setOpen(false);
 
@@ -66,12 +74,20 @@ const ChatDrawer = ({ chatData, userName = "User", open, setOpen }: any) => {
           <Typography variant="h6">Chat with Assistant</Typography>
         </Box>
         <Divider />
-        <Box sx={{ flexGrow: 1, overflowY: "auto", p: 2 }}>
-          <List>
-            {chatData.map(renderMessage)}
-            <div ref={messagesEndRef} />
-          </List>
-        </Box>
+        {isLoading ? (
+          <ChatLoader />
+        ) : (
+          <Box sx={{ flexGrow: 1, overflowY: "auto", p: 2 }}>
+            {chatData?.length > 0 ? (
+              <List>
+                {chatData.map(renderMessage)}
+                <div ref={messagesEndRef} />
+              </List>
+            ) : (
+              <NoChatView />
+            )}
+          </Box>
+        )}
         <Divider />
         <Box sx={{ p: 2, textAlign: "center" }}>
           <Button onClick={handleClose}>Close</Button>
