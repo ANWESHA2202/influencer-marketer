@@ -6,7 +6,7 @@ export const URLMapping = {
   registerCreator: "/auth/register/creator/",
 
   // Creators
-  "creators-list": "/creators/search/",
+  "creators-list": "/creators/search",
 
   // Campaigns
   campaigns: "/campaigns/",
