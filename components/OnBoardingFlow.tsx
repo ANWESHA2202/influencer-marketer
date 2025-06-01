@@ -8,9 +8,10 @@ import {
 } from "@mui/material";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import { useSearchParams } from "next/navigation";
 
 interface FormData {
-  userType: "brand" | "creator" | "";
+  userType: string;
   fullName: string;
   phoneNumber: string;
   companyName: string;
@@ -31,11 +32,11 @@ interface BrandInfoStepFormProps {
 }
 
 const steps: Step[] = [
-  {
-    label: "Are you signing up as a Brand or Creator?",
-    key: "userType",
-    type: "select",
-  },
+  // {
+  //   label: "Are you signing up as a Brand or Creator?",
+  //   key: "userType",
+  //   type: "select",
+  // },
   { label: "Full Name", key: "fullName", placeholder: "Enter your full name" },
   {
     label: "Phone Number",
@@ -56,8 +57,9 @@ const OnBoardingFlow: React.FC<BrandInfoStepFormProps> = ({
   isSaving,
 }) => {
   const [stepIndex, setStepIndex] = useState(0);
+  const type = useSearchParams()?.get("type");
   const [formData, setFormData] = useState<FormData>({
-    userType: "",
+    userType: type === "creator" ? "creator" : "brand",
     fullName: "",
     phoneNumber: "",
     companyName: "",
