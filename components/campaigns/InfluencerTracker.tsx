@@ -55,7 +55,7 @@ const InfluencerTracker = ({
   selectedCampaign: any;
   setSelectedCampaign: any;
 }) => {
-  const [creatorsConnected, setCreatorsConnected] = useState(creatordata);
+  const [creatorsConnected, setCreatorsConnected] = useState([]);
   const [showComparison, setShowComparison] = useState(false);
   const [isPayment, setIsPayment] = useState(false);
   const url = URLMapping["campaign-creator"].replace(
@@ -96,7 +96,9 @@ const InfluencerTracker = ({
     select: (data) => {
       return data;
     },
-    onSuccess: (data) => {},
+    onSuccess: (data) => {
+      console.log(data, "on success");
+    },
     onError: (error) => {},
   });
 
