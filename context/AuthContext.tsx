@@ -38,7 +38,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
 
-      console.log("user", user);
       setLoading(false);
       // @ts-ignore
       if (user?.accessToken) {
