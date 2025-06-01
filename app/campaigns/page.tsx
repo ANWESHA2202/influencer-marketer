@@ -14,6 +14,7 @@ const CampaignsPage = () => {
     <InfluencerTracker
       campaignId={campaignId}
       selectedCampaign={selectedCampaign}
+      setSelectedCampaign={setSelectedCampaign}
     />
   ) : (
     <CampaignsComponent setSelectedCampaign={setSelectedCampaign} />
