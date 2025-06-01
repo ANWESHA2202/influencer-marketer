@@ -90,6 +90,7 @@ export default function SignupPage() {
         username,
         userType,
         uid: generatedUserId,
+        phone_number: "9896316134",
       });
     } catch (e) {
       console.log("Error in Registering User", e);
