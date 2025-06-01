@@ -36,7 +36,11 @@ interface Campaign {
   influencers_reached: number;
 }
 
-const CampaignsComponent = () => {
+const CampaignsComponent = ({
+  setSelectedCampaign,
+}: {
+  setSelectedCampaign: (campaign: any) => void;
+}) => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [campaigns, setCampaigns] = useState<Campaign[]>([
     // Sample data based on your provided structure
@@ -129,10 +133,10 @@ const CampaignsComponent = () => {
 
   const handleCampaignSelect = (campaign: Campaign) => {
     const { id } = campaign;
+    setSelectedCampaign(campaign);
     router.push(`/campaigns?campaignId=${id}`);
+
     console.log("Selected campaign:", campaign);
-    // You can add logic here to handle campaign selection
-    // For example, open a detail view or edit form
   };
 
   return (

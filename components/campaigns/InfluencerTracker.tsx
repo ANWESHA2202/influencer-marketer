@@ -45,7 +45,13 @@ const creatordata: CampaignInfluencer[] = [
   },
 ];
 
-const InfluencerTracker = ({ campaignId }: { campaignId: string }) => {
+const InfluencerTracker = ({
+  campaignId,
+  selectedCampaign,
+}: {
+  campaignId: string;
+  selectedCampaign: any;
+}) => {
   const [creatorsConnected, setCreatorsConnected] = useState(creatordata);
   const [showComparison, setShowComparison] = useState(false);
   const [isPayment, setIsPayment] = useState(false);
@@ -53,6 +59,8 @@ const InfluencerTracker = ({ campaignId }: { campaignId: string }) => {
     "{campaign_id}",
     campaignId
   );
+
+  console.log(selectedCampaign, "selected campaign");
 
   // Fetch  Campaigns creator
   const {
@@ -83,7 +91,7 @@ const InfluencerTracker = ({ campaignId }: { campaignId: string }) => {
       <div className="flex justify-between items-center mb-8 stagger-item">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">
-            Summer Fashion Collection
+            {selectedCampaign?.title || ""}
           </h1>
           <p className="text-gray-600 mt-2">
             Track Your Deals with Selected Creator
