@@ -45,22 +45,20 @@ export function useFetchData<T = any>(
 
         return response;
       } catch (error: any) {
-        // Return a safe error response instead of throwing
-        // This prevents UI crashes while still allowing React Query to handle the error state
-        const safeError = new Error(
+        // Enhanced error handling with better context
+        const enhancedError = new Error(
           error.response?.data?.message ||
             error.message ||
-            "An unexpected error occurred"
+            "Failed to fetch data"
         );
 
-        // Add additional error context
-        (safeError as any).status = error.response?.status;
-        (safeError as any).statusText = error.response?.statusText;
-        (safeError as any).originalError = error;
+        // Add additional error context for debugging
+        (enhancedError as any).status = error.response?.status;
+        (enhancedError as any).statusText = error.response?.statusText;
+        (enhancedError as any).url = url;
+        (enhancedError as any).originalError = error;
 
-        throw safeError;
-      } finally {
-        console.log(`🏁 API call completed: ${url}`);
+        throw enhancedError;
       }
     },
     enabled,

@@ -41,7 +41,7 @@ const CreatorLists = ({ searchParams }: { searchParams: string }) => {
       );
     },
     onSuccess: (data) => {
-      console.log("Creators fetched successfully:", data);
+      // Remove console.log statement
     },
     onError: (error) => {
       console.error("Failed to fetch creators:", error);
@@ -52,7 +52,6 @@ const CreatorLists = ({ searchParams }: { searchParams: string }) => {
   const displayData = creatorsApiData || creatorsData;
 
   useEffect(() => {
-    console.log("Search params changed:", searchParams);
     refetchCreators();
   }, [searchParams, refetchCreators]);
 

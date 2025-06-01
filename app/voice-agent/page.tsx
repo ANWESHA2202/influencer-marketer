@@ -142,18 +142,15 @@ export default function VoiceAgentPage() {
 
   const conversation = useConversation({
     onConnect: () => {
-      console.log("Connected to voice agent");
       setError(null);
     },
-    onDisconnect: () => {
-      console.log("Disconnected from voice agent");
-    },
+    onDisconnect: () => {},
     onError: (error: any) => {
       console.error("Voice agent error:", error);
       setError(error.message || "An error occurred with the voice agent");
     },
     onMessage: (message: any) => {
-      console.log("Message received:", message);
+      // setMessages((prev) => [...prev, message]);
     },
   });
 
@@ -482,7 +479,6 @@ export default function VoiceAgentPage() {
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
-                  console.log("Circle clicked, status:", conversation.status);
                   if (conversation.status !== "connected") {
                     handleStartConversation();
                   }

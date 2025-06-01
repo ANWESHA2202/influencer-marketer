@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
   Button,
@@ -157,7 +157,6 @@ export default function CreatorRegistrationForm() {
     try {
       setIsLoading(true);
       // Here you would typically create the user account and save the creator data
-      console.log("Creator registration data:", creatorForm);
       // For now, just redirect to dashboard
       createUser(creatorForm);
     } catch (err: any) {
