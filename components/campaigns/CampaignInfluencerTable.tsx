@@ -76,7 +76,6 @@ const CampaignInfluencerTable: React.FC<CampaignCreatorTableProps> = ({
         field: "creator_id",
         flex: 1,
         cellRenderer: (params: any) => {
-          console.log(params);
           return <>{params.value}</>;
         },
       },

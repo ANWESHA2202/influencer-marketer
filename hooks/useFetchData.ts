@@ -58,7 +58,7 @@ export function useFetchData<T = any>(
 
         return response;
       } catch (error: any) {
-        console.error(`❌ API call failed: ${url}`, {
+        console.error(`❌ API call failed: ${url}`,{
           message: error.message,
           status: error.response?.status,
           statusText: error.response?.statusText,

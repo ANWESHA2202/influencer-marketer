@@ -32,7 +32,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   // Define public routes that don't require authentication
   const publicRoutes = ["/", "/login", "/signup"];
+  const reRouteToDashbaord = ["/"];
   const isPublicRoute = publicRoutes.includes(pathname);
+  const isRerouteToDashboard = reRouteToDashbaord.includes(pathname);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -45,21 +47,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         localStorage.setItem("token", user?.accessToken);
       }
 
-      // Redirect unauthenticated users from protected routes
-      if (!user && !isPublicRoute && !loading) {
+      if (!user && !isPublicRoute) {
+        // Unauthenticated user trying to access protected route
         router.push("/login");
+      }
+
+      if (user && isRerouteToDashboard) {
+        // Authenticated user on public route → redirect to dashboard
+        router.push("/dashboard");
       }
     });
 
     return () => unsubscribe();
-  }, [pathname, router, isPublicRoute, loading]);
-
-  // Redirect unauthenticated users when they try to access protected routes
-  useEffect(() => {
-    if (!loading && !user && !isPublicRoute) {
-      router.push("/login");
-    }
-  }, [user, loading, isPublicRoute, router]);
+  }, [pathname, router, isPublicRoute]);
 
   const logout = () => {
     signOut(auth).then(() => {
