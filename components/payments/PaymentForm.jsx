@@ -45,7 +45,7 @@ const CheckoutForm = () => {
   return (
     <form onSubmit={handleSubmit} style={{ maxWidth: 700, margin: "auto" }}>
       <PaymentElement
-        onLoaderStart={() => console.log("On load start")}
+        onLoaderStart={() => {}}
         onReady={() => setIsReady(true)}
       />
       {isReady && (

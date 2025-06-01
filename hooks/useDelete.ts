@@ -50,23 +50,10 @@ export function useDelete<TData = any, TVariables = any>(
           finalUrl = url.replace(":id", String(variables));
         }
 
-        console.log(`🚀 Starting DELETE request: ${finalUrl}`, {
-          originalUrl: url,
-          headerType,
-          deleteId,
-          variablesType: typeof variables,
-        });
-
         const config =
           headerType === "withoutHeaders" ? { headers: {} } : undefined;
 
         const response = await axiosInstance.delete<TData>(finalUrl, config);
-
-        console.log(`✅ DELETE request successful: ${finalUrl}`, {
-          status: response.status,
-          statusText: response.statusText,
-          deletedId: deleteId,
-        });
 
         return response;
       } catch (error: any) {
@@ -91,17 +78,12 @@ export function useDelete<TData = any, TVariables = any>(
         (safeError as any).originalError = error;
 
         throw safeError;
-      } finally {
-        console.log(`🏁 DELETE request completed: ${url}`);
       }
     },
     onSuccess: async (data, variables, context) => {
       try {
-        console.log(`🎉 DELETE mutation successful for: ${url}`);
-
         // Invalidate related queries safely
         if (invalidateQueries.length > 0) {
-          console.log(`🔄 Invalidating queries:`, invalidateQueries);
           try {
             await Promise.allSettled(
               invalidateQueries.map((queryKey) =>

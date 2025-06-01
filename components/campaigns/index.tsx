@@ -80,7 +80,7 @@ const CampaignsComponent = ({
       return data?.data || [];
     },
     onSuccess: (data) => {
-      console.log("Campaigns fetched:", data);
+      // Remove console.log statement
     },
     onError: (error) => {
       console.error("Failed to fetch campaigns:", error);
