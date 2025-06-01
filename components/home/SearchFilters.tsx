@@ -257,9 +257,16 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({ onFiltersChange }) => {
             gap: 2,
             mb: 3,
             opacity: 0.6,
+            marginTop: "1em",
           }}
         >
-          <Box sx={{ flex: 1, height: "1px", backgroundColor: "divider" }} />
+          <Box
+            sx={{
+              flex: 1,
+              height: "1px",
+              backgroundColor: "divider",
+            }}
+          />
           <Typography
             variant="caption"
             color="text.secondary"

@@ -58,7 +58,7 @@ const InfluencerTracker = ({
   const [creatorsConnected, setCreatorsConnected] = useState([]);
   const [showComparison, setShowComparison] = useState(false);
   const [isPayment, setIsPayment] = useState(false);
-
+  const [isLoadingTableData, setIsLoadingTableData] = useState(true);
   const url = URLMapping["campaign-creator"].replace(
     "{campaign_id}",
     campaignId
@@ -155,6 +155,7 @@ const InfluencerTracker = ({
       const creators = await refetchCreatorData();
       if (creators.data.data) {
         setCreatorsConnected(creators.data.data);
+        setIsLoadingTableData(false);
       }
     } catch (e) {
       console.error("Error in fetching");
@@ -200,7 +201,7 @@ const InfluencerTracker = ({
           Compare
         </Button>
       </div>
-      {loading && !creatorDataError ? (
+      {isLoadingTableData && !creatorDataError ? (
         <TableSkeleton />
       ) : (
         <CampaignInfluencerTable
