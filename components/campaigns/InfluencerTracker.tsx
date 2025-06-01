@@ -47,6 +47,10 @@ const creatordata: CampaignInfluencer[] = [
 const InfluencerTracker = ({ campaignId }: { campaignId: string }) => {
   const [creatorsConnected, setCreatorsConnected] = useState(creatordata);
   const [showComparison, setShowComparison] = useState(false);
+  const url = URLMapping["campaign-creator"].replace(
+    "{campaign_id}",
+    campaignId
+  );
 
   // Fetch  Campaigns creator
   const {
@@ -54,25 +58,20 @@ const InfluencerTracker = ({ campaignId }: { campaignId: string }) => {
     isLoading: loading,
     refetch: refetchData,
     error: creatorDataError,
-  } = useFetchData(
-    axiosWithAuth,
-    URLMapping["campaign-creator"],
-    "withHeaders",
-    {
-      enabled: true,
-      select: (data) => {
-        // Transform the data
-        console.log(data);
-        return [];
-      },
-      onSuccess: (data) => {
-        console.log("Campaigns Creator fetched:", data);
-      },
-      onError: (error) => {
-        console.error("Failed to fetch campaigns creator:", error);
-      },
-    }
-  );
+  } = useFetchData(axiosWithAuth, url, "withHeaders", {
+    enabled: true,
+    select: (data) => {
+      // Transform the data
+      console.log(data);
+      return [];
+    },
+    onSuccess: (data) => {
+      console.log("Campaigns Creator fetched:", data);
+    },
+    onError: (error) => {
+      console.error("Failed to fetch campaigns creator:", error);
+    },
+  });
 
   return (
     <div>
