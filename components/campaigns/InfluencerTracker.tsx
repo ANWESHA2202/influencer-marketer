@@ -46,6 +46,28 @@ const creatordata: CampaignInfluencer[] = [
   },
 ];
 
+function enrichCreatorData(creatorData: any, allcreator: any) {
+  const matchedCreator = allcreator.find(
+    (c: any) => c.id === creatorData.creator_id
+  );
+
+  if (!matchedCreator) return creatorData;
+
+  const enrichedData = {
+    ...creatorData,
+    ...matchedCreator,
+    name: matchedCreator.full_name, // map full_name to name
+  };
+
+  // Ensure original keys in creatorData are retained, even if undefined in matchedCreator
+  for (const key in creatorData) {
+    if (!(key in enrichedData)) {
+      enrichedData[key] = creatorData[key];
+    }
+  }
+
+  return enrichedData;
+}
 const InfluencerTracker = ({
   campaignId,
   selectedCampaign,
@@ -69,7 +91,7 @@ const InfluencerTracker = ({
   );
   const allCreatorApiUrl = `${
     URLMapping["creators-list"]
-  }?limit=20&query=${" "}`;
+  }?limit=100&query=${" "}`;
   const {
     data: campaignDetail,
     isLoading: campaignloading,
@@ -133,10 +155,16 @@ const InfluencerTracker = ({
         setSelectedCampaign(data?.data);
       }
       const allCreators = await refetchCreators();
-
+      const allData = allCreators.data;
       const creators = await refetchCreatorData();
       if (creators.data.data) {
-        setCreatorsConnected(creators.data.data);
+        const temp: any = [];
+        creators.data.data.map((credt: any) => {
+          const updatedData = enrichCreatorData(credt, allData);
+          temp.push(updatedData);
+        });
+
+        setCreatorsConnected(temp);
         setIsLoadingTableData(false);
       }
     } catch (e) {

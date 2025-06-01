@@ -39,7 +39,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
-
+      console.log(user, "for token");
       setLoading(false);
       // @ts-ignore
       if (user?.accessToken) {

@@ -2,7 +2,12 @@
 
 import React, { useMemo, useState } from "react";
 import DataTable, { TableColumn } from "../common/DataTable";
-import { Button } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
+import SourceRoundedIcon from "@mui/icons-material/SourceRounded";
+import { useFetchData } from "@/hooks";
+import { axiosWithAuth } from "@/lib/axios";
+import { URLMapping } from "@/lib/constants";
+import ChatDrawer from "./ChatDrawer";
 
 export interface CampaignInfluencer {
   campaign_id: number;
@@ -69,11 +74,57 @@ const CampaignInfluencerTable: React.FC<CampaignCreatorTableProps> = ({
   loading,
   onPaymentInitiated,
 }) => {
+  const [chatUrl, setChatUrl] = useState("");
+  const [openChatDrawer, setOpenChatDrawer] = useState(false);
+  const [chatData, setChatData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const {
+    data: chatDatafetched,
+    isLoading: loadingChat,
+    refetch: fetchChat,
+    error: chatError,
+  } = useFetchData(axiosWithAuth, chatUrl, "withHeaders", {
+    enabled: false,
+    select: (data) => {
+      return data;
+    },
+    onSuccess: (data) => {
+      console.log("chat fetch", data);
+    },
+    onError: (error) => {
+      console.error("error", error);
+    },
+  });
+
+  const handleClick = (creatorId: any, campaignId: any) => {
+    const dynamicUrl = `/campaigns/creator/${creatorId}/campaign/${campaignId}/chat`;
+    setChatUrl(dynamicUrl);
+
+    setTimeout(async () => {
+      setIsLoading(true);
+      setOpenChatDrawer(true);
+      try {
+        const { data } = await fetchChat(); // ✅ Works correctly now
+        if (data.data.messages) {
+          setChatData(data.data.messages);
+        } else {
+          setChatData([]);
+        }
+      } catch (error) {
+        // console.error("Error fetching chat:", error);
+        setChatData([]);
+      } finally {
+        setIsLoading(false);
+      }
+    }, 0);
+  };
+
   const columns: TableColumn[] = useMemo(
     () => [
       {
         headerName: "Creator",
-        field: "creator_id",
+        field: "full_name",
         flex: 1,
         cellRenderer: (params: any) => {
           return <>{params.value}</>;
@@ -81,7 +132,7 @@ const CampaignInfluencerTable: React.FC<CampaignCreatorTableProps> = ({
       },
       {
         headerName: "AI Match",
-        field: "aiMatch",
+        field: "match_score",
         flex: 1,
         cellRenderer: (params: any) => {
           const rate = params.value;
@@ -96,11 +147,17 @@ const CampaignInfluencerTable: React.FC<CampaignCreatorTableProps> = ({
         headerName: "Offered Rate",
         field: "offered_rate",
         flex: 1,
+        cellRenderer: (params) => {
+          return <>₹ {params.value}</>;
+        },
       },
       {
         headerName: "Negotiated Rate",
         field: "negotiated_rate",
         flex: 1,
+        cellRenderer: (params) => {
+          return <>₹ {params.value}</>;
+        },
       },
       {
         headerName: "Total Deliverables",
@@ -118,7 +175,7 @@ const CampaignInfluencerTable: React.FC<CampaignCreatorTableProps> = ({
         flex: 1,
         cellRenderer: (params: any) => {
           const value = parseFloat(params.value);
-          return <>{value}</>;
+          return <>₹ {value ? value : ""}</>;
         },
       },
       {
@@ -161,7 +218,28 @@ const CampaignInfluencerTable: React.FC<CampaignCreatorTableProps> = ({
         field: "contract_status",
         flex: 1,
         cellRenderer: (params: any) => {
-          return <Button variant="text">Send</Button>;
+          return !["cancelled", "declined"]?.includes(params.data.status) ? (
+            <Button variant="text">Send</Button>
+          ) : (
+            <></>
+          );
+        },
+      },
+
+      {
+        headerName: "Chat",
+        field: "",
+        flex: 1,
+        cellRenderer: (params: any) => {
+          return (
+            <IconButton
+              onClick={() =>
+                handleClick(params.data.creator_id, params.data.campaign_id)
+              }
+            >
+              <SourceRoundedIcon />
+            </IconButton>
+          );
         },
       },
 
@@ -170,10 +248,12 @@ const CampaignInfluencerTable: React.FC<CampaignCreatorTableProps> = ({
         field: "payment_status",
         flex: 1,
         cellRenderer: (params: any) => {
-          return (
+          return params.data.status === "accepted" ? (
             <Button variant="contained" onClick={onPaymentInitiated}>
               Pay
             </Button>
+          ) : (
+            <></>
           );
         },
       },
@@ -201,6 +281,12 @@ const CampaignInfluencerTable: React.FC<CampaignCreatorTableProps> = ({
         emptyText="No Creators Connected"
         suppressRowClickSelection={true}
         animateRows={true}
+      />
+      <ChatDrawer
+        open={openChatDrawer}
+        setOpen={setOpenChatDrawer}
+        chatData={chatData}
+        isLoading={isLoading}
       />
     </div>
   );
