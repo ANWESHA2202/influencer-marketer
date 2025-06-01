@@ -19,9 +19,9 @@ interface Campaign {
   budget: number;
   start_date: string;
   end_date: string;
-  target_audience: Record<string, any>;
-  content_requirements: Record<string, any>;
-  deliverables: Record<string, any>;
+  target_audience: string;
+  content_requirements: string;
+  deliverables: string;
   status: "draft" | "active" | "paused" | "completed" | "cancelled";
   created_at: string;
   influencers_reached: number;

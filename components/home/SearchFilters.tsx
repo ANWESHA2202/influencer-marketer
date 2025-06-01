@@ -156,6 +156,11 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({ onFiltersChange }) => {
             value={aiSearchPrompt}
             onChange={(e) => handleAISearchChange(e.target.value)}
             onBlur={handleAISearchBlur}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleAISearchBlur();
+              }
+            }}
             sx={{
               ...compactInputSx,
               "& .MuiInputBase-root": {
@@ -213,7 +218,17 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({ onFiltersChange }) => {
             onChange={(e) =>
               handleTextFieldChange("min_followers", e.target.value)
             }
-            onBlur={(e) => handleTextFieldBlur("min_followers", e.target.value)}
+            onBlur={(e) =>
+              handleTextFieldBlur("min_followers", localFilters.min_followers)
+            }
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleTextFieldBlur(
+                  "min_followers",
+                  localFilters.min_followers
+                );
+              }
+            }}
             sx={compactInputSx}
             InputProps={{
               startAdornment: (
@@ -264,8 +279,19 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({ onFiltersChange }) => {
               handleTextFieldChange("min_engagement_rate", e.target.value)
             }
             onBlur={(e) =>
-              handleTextFieldBlur("min_engagement_rate", e.target.value)
+              handleTextFieldBlur(
+                "min_engagement_rate",
+                localFilters.min_engagement_rate
+              )
             }
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleTextFieldBlur(
+                  "min_engagement_rate",
+                  localFilters.min_engagement_rate
+                );
+              }
+            }}
             sx={compactInputSx}
             InputProps={{
               startAdornment: (

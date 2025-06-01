@@ -58,7 +58,6 @@ const CreatorCard: React.FC<CreatorCardProps> = ({ creator, onClick }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [imageError, setImageError] = useState(false);
   const matchDisplay = getMatchScoreDisplay(creator.match_score);
-  console.log("creator", creator);
 
   const hasValidImage = creator.profile_image_url && !imageError;
 

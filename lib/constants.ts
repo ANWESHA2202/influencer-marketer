@@ -10,23 +10,13 @@ export const URLMapping = {
   // Creators
   "creators-list": "/creators/search",
 
-  // User Management
-  profile: "/user/profile",
-  "update-profile": "/user/profile",
-
-  // Influencers
-  influencers: "/influencers",
-  "influencer-details": "/influencers/:id",
-  "influencer-search": "/influencers/search",
-  "influencer-categories": "/influencers/categories",
-
   // Campaigns
   campaigns: "/campaigns",
   "campaign-details": "/campaigns/:id",
   "create-campaign": "/campaigns",
   "update-campaign": "/campaigns/:id",
   "delete-campaign": "/campaigns/:id",
-  "campaign-creator" : "/campaigns/{campaign_id}/creators",
+  "campaign-creator": "/campaigns/{campaign_id}/creators",
 
   // Analytics
   "campaign-analytics": "/analytics/campaigns/:id",
