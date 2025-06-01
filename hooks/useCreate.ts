@@ -40,7 +40,15 @@ export function useCreate<TData = any, TVariables = any>(
         });
 
         const config =
-          headerType === "withoutHeaders" ? { headers: {} } : undefined;
+          headerType === "withoutHeaders"
+            ? { headers: {} }
+            : {
+                headers: {
+                  "Content-Type": "application/json",
+                  Accept: "application/json",
+                  Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+              };
 
         const response = await axiosInstance.post<TData>(url, data, config);
 
