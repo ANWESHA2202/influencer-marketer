@@ -8,7 +8,6 @@ import {
   ListItem,
   ListItemButton,
   ListItemIcon,
-  Typography,
   Tooltip,
   Divider,
 } from "@mui/material";
@@ -38,7 +37,7 @@ const navigationItems: NavigationItem[] = [
     id: "dashboard",
     label: "Dashboard",
     icon: <DashboardIcon />,
-    path: "/",
+    path: "/dashboard",
   },
   {
     id: "campaigns",

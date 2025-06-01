@@ -32,7 +32,7 @@ export default function LoginPage() {
     try {
       setIsLogging(true);
       await signInWithEmailAndPassword(auth, email, password);
-      router.push("/"); // redirect to home or dashboard
+      router.push("/dashboard"); // redirect to home or dashboard
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -45,7 +45,7 @@ export default function LoginPage() {
     try {
       const resFromGoogle = await signInWithPopup(auth, provider);
       console.log(resFromGoogle, "on login");
-      router.push("/");
+      router.push("/dashboard");
     } catch (err: any) {
       setError(err.message);
     }

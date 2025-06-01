@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { useRouter } from "next/navigation";
 import { ArrowRight, Person2, TrendingUp } from "@mui/icons-material";
