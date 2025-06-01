@@ -2,6 +2,7 @@
 
 import React, { useMemo, useState } from "react";
 import DataTable, { TableColumn } from "../common/DataTable";
+import { Button } from "@mui/material";
 
 export interface CampaignInfluencer {
   campaign_id: number;
@@ -66,10 +67,10 @@ const CampaignInfluencerTable: React.FC<CampaignCreatorTableProps> = ({
   onCreatorSelected,
   loading,
 }) => {
-  const columns: TableColumn<CampaignInfluencer>[] = useMemo(
+  const columns: TableColumn[] = useMemo(
     () => [
       {
-        headerName: "Creator ID",
+        headerName: "Creator",
         field: "creator_id",
         flex: 1,
         cellRenderer: (params: any) => {
@@ -151,6 +152,24 @@ const CampaignInfluencerTable: React.FC<CampaignCreatorTableProps> = ({
         flex: 1,
         cellRenderer: (params: any) => {
           return <></>;
+        },
+      },
+
+      {
+        headerName: "Contract Status",
+        field: "contract_status",
+        flex: 1,
+        cellRenderer: (params: any) => {
+          return <Button variant="text">Send</Button>;
+        },
+      },
+
+      {
+        headerName: "Payment",
+        field: "payment_status",
+        flex: 1,
+        cellRenderer: (params: any) => {
+          return <Button variant="contained">Pay</Button>;
         },
       },
     ],
