@@ -32,6 +32,7 @@ export default function SignupPage() {
   const [isUserDataProcess, setIsUserDataProcess] = useState(false);
   const theme = useTheme();
   const [userCreationError, setUserCreationError] = useState("");
+  const [generatedUserId, setGeneratedUserId] = useState("");
 
   const {
     create: createUser,
@@ -66,7 +67,8 @@ export default function SignupPage() {
     e.preventDefault();
     try {
       setSaving(true);
-      await createUserWithEmailAndPassword(auth, email, password);
+      const res = await createUserWithEmailAndPassword(auth, email, password);
+      setGeneratedUserId(res?.user?.uid || "");
       setIsUserDataProcess(true);
     } catch (err: any) {
       setError(err.message);
@@ -87,6 +89,7 @@ export default function SignupPage() {
         password: password,
         username,
         userType,
+        uid: generatedUserId,
       });
     } catch (e) {
       console.log("Error in Registering User", e);
