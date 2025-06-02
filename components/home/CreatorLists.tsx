@@ -19,7 +19,7 @@ const CreatorLists = ({ searchParams }: { searchParams: string }) => {
   // Construct the API URL with search parameters
   const apiUrl = searchParams
     ? `${URLMapping["creators-list"]}?${searchParams}`
-    : `${URLMapping["creators-list"]}?limit=20&query=${" "}`;
+    : `${URLMapping["creators-list"]}?limit=100&query=${" "}`;
 
   const {
     data: creatorsApiData,
