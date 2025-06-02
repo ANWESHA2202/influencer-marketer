@@ -114,8 +114,8 @@ const CreatorModal: React.FC<CreatorModalProps> = ({
     inviteCreatorToCampaign({
       creator_id: creator?.id,
       campaign_id: campaign?.id,
-      offer_rate: campaign?.budget,
-      deliverable_total: 2,
+      offered_rate: campaign?.budget,
+      deliverables_total: 2,
     });
   };
 
